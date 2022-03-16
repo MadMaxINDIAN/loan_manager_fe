@@ -3,6 +3,7 @@ import DashboardComponent from "./components/DashboardComponent";
 import ReportsComponent from "./components/ReportsComponent";
 import { Navigate } from "react-router-dom";
 import NewAccountComponent from "./components/NewAccountComponent";
+import Home from "./Home";
 
 const routes = [
   {
@@ -29,7 +30,7 @@ const routes = [
   // },
   {
     path: "/",
-    element: <>Hello world</>,
+    element: <Home />,
   },
   {
     path: "*",

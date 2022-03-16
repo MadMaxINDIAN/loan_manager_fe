@@ -9,7 +9,7 @@ class StateLoader {
             }
             const data = JSON.parse(serializedState);
             data.errors = {};
-            data.loading.isLoading = false;
+            // data.loading.isLoading = false;
             return data;
         }
         catch (err) {
@@ -21,7 +21,7 @@ class StateLoader {
         try {
             const saveState = state;
             saveState.errors = {};
-            saveState.loading.isLoading = false;
+            // saveState.loading.isLoading = false;
             const serializedState = JSON.stringify(saveState);
             localStorage.setItem("http://localhost:state", serializedState);
             this.state = serializedState;
@@ -32,7 +32,6 @@ class StateLoader {
     }
 
     initializeState() {
-        console.log(this.state);
         return {};
     };
 }

@@ -10,4 +10,5 @@ body {
 
 .hover_black:hover {
   background-color: #efefef;
+  cursor: pointer;
 }

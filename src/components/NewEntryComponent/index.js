@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { TextField } from "@mui/material";
+import DataGrid from "../DataGrid";
 import axios from "axios";
 
 const NewEntryComponent = () => {
@@ -16,11 +17,16 @@ const NewEntryComponent = () => {
   };
 
   return (
-    <div>
-      <Box sx={{ flexGrow: 1 }} mt={8}>
-        <Typography variant="h6" noWrap component="div" my={2}>
-          New Entry
-        </Typography>
+    <div style={{
+      marginTop: "4em"
+    }}>
+      <Typography variant="h6" color="GrayText" noWrap component="div" my={2}>
+        New Entry
+      </Typography>
+      <center>
+      <Box sx={{ flexGrow: 1 }} style={{
+        maxWidth: "700px",
+      }} >
         <TextField
           id="name"
           name="name"
@@ -28,15 +34,26 @@ const NewEntryComponent = () => {
           variant="outlined"
           label="Name"
           fullWidth
+          style={{
+            marginBottom: "1em"
+          }}
           onChange={(e) => handleChange(e.target.value)}
         />
-        {borrowers.map((borrower) => (
+        {borrowers.map((borrower, index) => (
           <Box
-            display="flex"
-            justifyContent="space-between"
-            borderRadius="lg"
-            borderWidth="1px"
-            borderColor="black"
+              key={index}
+          className="hover_black"
+          style={{
+            display:"flex",
+            justifyContent:"space-between",
+            borderRadius:"15px",
+            border: "2px solid #e0e0e0",
+            padding: "0 15px",
+            margin: "2px 0"
+          }}
+          onClick={() => {
+
+          }}
           >
             <Typography noWrap component="div" my={2}>
               {borrower.name}
@@ -55,7 +72,10 @@ const NewEntryComponent = () => {
             </Typography>
           </Box>
         ))}
+        
+        {/* <DataGrid fileds={[]} /> */}
       </Box>
+      </center>
     </div>
   );
 };

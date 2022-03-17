@@ -4,6 +4,7 @@ import ReportsComponent from "./components/ReportsComponent";
 import { Navigate } from "react-router-dom";
 import NewAccountComponent from "./components/NewAccountComponent";
 import Home from "./Home";
+import NewEntryComponent from "./components/NewEntryComponent";
 
 const routes = [
   {
@@ -21,6 +22,10 @@ const routes = [
       {
         path: "new_account",
         element: <NewAccountComponent />,
+      },
+      {
+        path: "new_entry",
+        element: <NewEntryComponent />,
       },
     ],
   },

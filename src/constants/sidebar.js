@@ -17,6 +17,7 @@ const list1 = [
   {
     title: "New Entry",
     icon: <ReceiptRoundedIcon />,
+    route: "/dashboard/new_entry",
   },
   {
     title: "Reports",

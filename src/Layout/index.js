@@ -10,13 +10,14 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import sidebar from "../constants/sidebar";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 export default function Layout(props) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -57,6 +58,7 @@ export default function Layout(props) {
                 button
                 onClick={() => navigate(item.route)}
                 key={item.title}
+                selected={pathname === item.route}
               >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.title} />

@@ -1,9 +1,5 @@
 import {
-    LOGIN_FAIL,
-    LOGIN_SUCCESS,
-    LOGOUT_SUCCESS,
-    SOCKET_CONNECTION_ERROR,
-    UPDATE_PROFILE
+  LOGIN,
   } from "../actions/type";
   
   const initialState = {
@@ -13,28 +9,12 @@ import {
   
   export default function (state = initialState, action) {
     switch (action.type) {
-      case LOGIN_SUCCESS:
+      case LOGIN:
         return {
           ...state,
           isAuthenticated: true,
           user: action.payload,
         };
-      case LOGIN_FAIL:
-        return {
-          ...state,
-          isAuthenticated: false,
-          user: {},
-        };
-      case LOGOUT_SUCCESS:
-        return initialState;
-      case UPDATE_PROFILE:
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            user: action.payload,
-          }
-        }
       default:
         return state;
     }

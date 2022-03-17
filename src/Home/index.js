@@ -8,8 +8,10 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { connect } from "react-redux";
-import { addLoader } from "../redux/services/actions/loaderActions";
+import { addLoader, removeLoader } from "../redux/services/actions/loaderActions";
 import { users } from "../constants/users";
+import { login } from "../redux/services/actions/authActions";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
     return (
@@ -32,6 +34,12 @@ function Copyright(props) {
 const theme = createTheme();
 
 function Home(props) {
+    const navigate = useNavigate();
+    React.useEffect(() => {
+        if (props.auth.isAuthenticated) {
+            navigate("/dashboard");
+        }
+    }, [props.auth.isAuthenticated]);
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -40,6 +48,15 @@ function Home(props) {
             username: data.get("username"),
             password: data.get("password"),
         });
+        users.forEach(user => {
+            if (user.username === data.get("username") && user.password === data.get("password")) {
+                props.login(user);
+                props.removeLoader(false);
+                console.log(props.auth);
+            } else {
+                props.removeLoader(false);
+            }
+        })
     };
 
     return (
@@ -115,5 +132,5 @@ export default connect(
     (state) => ({
         auth: state.auth,
     }),
-    {addLoader}
+    {addLoader, login, removeLoader}
 )(Home);

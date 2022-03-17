@@ -9,6 +9,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { connect } from "react-redux";
 import { addLoader } from "../redux/services/actions/loaderActions";
+import { users } from "../constants/users";
 
 function Copyright(props) {
     return (
@@ -34,6 +35,7 @@ function Home(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        console.log(users);
         console.log({
             username: data.get("username"),
             password: data.get("password"),
@@ -60,7 +62,7 @@ function Home(props) {
                         src="/loan.png"
                         alt="Loan image"
                         style={{
-                            maxWidth: "180px",
+                            maxWidth: "120px",
                         }}
                     />
                     <Typography component="h1" variant="h5">

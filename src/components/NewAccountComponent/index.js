@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import DatePicker from "react-datepicker";
+import Typography from "@mui/material/Typography";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -48,7 +49,10 @@ const NewAccountComponent = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }} mt={8}>
-      <Grid container spacing={2}>
+      <Typography variant="h6" noWrap component="div">
+        New Account
+      </Typography>
+      <Grid container spacing={2} mt={1}>
         <Grid item xs={12} sm={6} lg={4}>
           <TextField
             id="name"

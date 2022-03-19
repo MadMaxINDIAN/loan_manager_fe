@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import DataGrid from "../DataGrid";
 import axios from "axios";
 import { useSnackbar } from "notistack";
@@ -12,11 +12,14 @@ const NewEntryComponent = () => {
   const [name, setName] = useState();
   const [borrowers, setBorrowers] = useState([]);
   const [borrower, setBorrower] = useState();
-  const [date, setDate] = useState(new Date());
-  const [amount, setAmount] = useState();
+
   const { enqueueSnackbar } = useSnackbar();
 
   const handleChange = (name) => {
+    setBorrower();
+    if (!name) {
+      return setBorrowers([]);
+    }
     axios
       .get(`http://localhost:5000/borrower/get?search=${name}`)
       .then((response) => {
@@ -29,7 +32,6 @@ const NewEntryComponent = () => {
         });
       });
   };
-
   const handleClick = async (borrower) => {
     axios
       .get(`http://localhost:5000/borrower/get/${borrower._id}`)
@@ -74,39 +76,40 @@ const NewEntryComponent = () => {
             onChange={(e) => handleChange(e.target.value)}
           />
           {borrowers.map((borrower, index) => (
-            <Box
-              key={index}
-              className="hover_black"
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                borderRadius: "15px",
-                border: "2px solid #e0e0e0",
-                padding: "0 15px",
-                margin: "2px 0",
-              }}
-              onClick={() => handleClick(borrower)}
-            >
-              <Typography noWrap component="div" my={2}>
-                {borrower.name}
-              </Typography>
-              <Typography noWrap component="div" my={2}>
-                {borrower.address}
-              </Typography>
-              <Typography noWrap component="div" my={2}>
-                {borrower.contact}
-              </Typography>
-              <Typography noWrap component="div" my={2}>
-                {borrower.occupation}
-              </Typography>
-              <Typography noWrap component="div" my={2}>
-                {borrower.aadhar.match(/.{1,4}/g).join(" ")}
-              </Typography>
+            <Box key={index}>
+              <Box
+                className="hover_black"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  borderRadius: "15px",
+                  border: "2px solid #e0e0e0",
+                  padding: "0 15px",
+                  margin: "2px 0",
+                }}
+                onClick={() => handleClick(borrower)}
+              >
+                <Typography noWrap component="div" my={2}>
+                  {borrower.name}
+                </Typography>
+                <Typography noWrap component="div" my={2}>
+                  {borrower.address}
+                </Typography>
+                <Typography noWrap component="div" my={2}>
+                  {borrower.contact}
+                </Typography>
+                <Typography noWrap component="div" my={2}>
+                  {borrower.occupation}
+                </Typography>
+                <Typography noWrap component="div" my={2}>
+                  {borrower.aadhar.match(/.{1,4}/g).join(" ")}
+                </Typography>
+              </Box>
             </Box>
           ))}
         </Box>
       </center>
-      {borrower && <BorrowerDetails borrower={borrower} date={date}/>}
+      {borrower && <BorrowerDetails borrower={borrower} />}
     </div>
   );
 };

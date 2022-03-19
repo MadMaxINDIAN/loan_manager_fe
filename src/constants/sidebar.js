@@ -22,6 +22,7 @@ const list1 = [
   {
     title: "Reports",
     icon: <AssessmentRoundedIcon />,
+    route: "/dashboard/reports",
   },
 ];
 

@@ -1,11 +1,38 @@
-import React from "react";
+import { Grid, TextField, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import axios from "axios";
+import React, { useEffect } from "react";
 
 const DashboardComponent = () => {
-    console.log("DashboardComponent");
+    const [loans, setLoans] = React.useState([]);
+
+    useEffect(() => {
+        axios.get("http://localhost:5000/borrower/total_loan_accounts").then(res => {
+            setLoans(res.data.loans);
+        })
+    })
+
     return (
-        <h1>
-            Dashboard
-        </h1>
+        <div style={{
+            marginTop: "4em"
+        }}>
+            <Grid container>
+                <Grid item xs={3}>
+                    <Box style={{
+                        boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
+                    }} >
+                        <TextField
+                            id="outlined-basic"
+                            label="Loan Accounts"
+                            variant="outlined"
+                            fullWidth
+                            value={loans}
+                            disabled
+                            ></TextField>
+                    </Box>
+                </Grid>
+            </Grid>
+        </div>
     )
 }
 

@@ -36,8 +36,8 @@ const DashboardComponent = () => {
         date,
       });
       console.log(response.data);
-      setTotalInvested(response.data.total_investment);
-      setTotalReceived(response.data.total_taken);
+      setTotalInvested(response.data.total_investment || 0);
+      setTotalReceived(response.data.total_received || 0);
     } catch (err) {
       enqueueSnackbar(err?.response?.data?.message || "Something went wrong", {
         variant: "error",

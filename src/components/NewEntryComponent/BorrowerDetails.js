@@ -10,26 +10,30 @@ const BorrowerDetails = (props) => {
   const [date, setDate] = useState(new Date());
   const [amount, setAmount] = useState();
   const { enqueueSnackbar } = useSnackbar();
-  console.log(borrower);
 
   const handleSubmit = async (id) => {
-    console.log(id);
     const data = {
       date: date,
       amount: amount,
     };
     try {
-      const res = await axios.post(`http://localhost:5000/transaction/${id}/add`, data);
+      const res = await axios.post(
+        `http://localhost:5000/transaction/${id}/add`,
+        data
+      );
       setBorrower(res.data);
       enqueueSnackbar(res?.data?.message, {
         variant: "success",
         autoHideDuration: 3000,
-      })
-    } catch (err) {
-      enqueueSnackbar(err?.response?.data?.message || "Could not submit entry", {
-        variant: "error",
-        autoHideDuration: 3000,
       });
+    } catch (err) {
+      enqueueSnackbar(
+        err?.response?.data?.message || "Could not submit entry",
+        {
+          variant: "error",
+          autoHideDuration: 3000,
+        }
+      );
     }
   };
 
@@ -87,7 +91,7 @@ const BorrowerDetails = (props) => {
                 onChange={(date) => setDate(date)}
               />
             </Typography>
-             <TextField
+            <TextField
               id="amount"
               disabled={loan.status !== "active"}
               name="amount"
@@ -96,16 +100,17 @@ const BorrowerDetails = (props) => {
               onChange={(e) => setAmount(e.target.value)}
             />
           </Box>
-          {loan.status === "active" &&
-          <Box display="flex" justifyContent="flex-end" mt={2}>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={() => handleSubmit(loan._id)}
-            >
-              Add entry
-            </Button>
-          </Box>}
+          {loan.status === "active" && (
+            <Box display="flex" justifyContent="flex-end" mt={2}>
+              <Button
+                variant="contained"
+                size="small"
+                onClick={() => handleSubmit(loan._id)}
+              >
+                Add entry
+              </Button>
+            </Box>
+          )}
         </Box>
       ))}
     </Box>

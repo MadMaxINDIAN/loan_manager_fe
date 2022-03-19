@@ -22,7 +22,7 @@ const BorrowerDetails = (props) => {
       await axios.post(`http://localhost:5000/transaction/${id}/add`, data);
     } catch (err) {
       console.log(err);
-      enqueueSnackbar("Could not submit entry", {
+      enqueueSnackbar(err?.response?.data?.message || "Could not submit entry", {
         variant: "error",
         autoHideDuration: 3000,
       });
@@ -50,7 +50,7 @@ const BorrowerDetails = (props) => {
         Loans:
       </Typography>
       {borrower.loans.map((loan, index) => (
-        <Box key={index}>
+        <Box key={index} mt={2}>
           <Box
             style={{
               display: "flex",
@@ -78,18 +78,21 @@ const BorrowerDetails = (props) => {
             <Typography noWrap component="div" my={1}>
               <DatePicker
                 selected={date}
+                disabled={loan.status === "closed"}
                 dateFormat="dd/MM/yyyy"
                 onChange={(date) => setDate(date)}
               />
             </Typography>
-            <TextField
+             <TextField
               id="amount"
+              disabled={loan.status !== "active"}
               name="amount"
               placeholder="Amount"
               size="small"
               onChange={(e) => setAmount(e.target.value)}
             />
           </Box>
+          {loan.status === "active" &&
           <Box display="flex" justifyContent="flex-end" mt={2}>
             <Button
               variant="contained"
@@ -98,7 +101,7 @@ const BorrowerDetails = (props) => {
             >
               Add entry
             </Button>
-          </Box>
+          </Box>}
         </Box>
       ))}
     </Box>

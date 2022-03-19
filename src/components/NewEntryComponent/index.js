@@ -109,7 +109,7 @@ const NewEntryComponent = () => {
           ))}
         </Box>
       </center>
-      {borrower && <BorrowerDetails borrower={borrower} />}
+      {borrower && <BorrowerDetails borrower={borrower} setBorrower={setBorrower} />}
     </div>
   );
 };

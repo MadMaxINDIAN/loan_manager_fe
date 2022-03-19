@@ -6,10 +6,11 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 
 const BorrowerDetails = (props) => {
-  const { borrower } = props;
+  const { borrower, setBorrower } = props;
   const [date, setDate] = useState(new Date());
   const [amount, setAmount] = useState();
   const { enqueueSnackbar } = useSnackbar();
+  console.log(borrower);
 
   const handleSubmit = async (id) => {
     console.log(id);
@@ -17,11 +18,14 @@ const BorrowerDetails = (props) => {
       date: date,
       amount: amount,
     };
-    console.log(data);
     try {
-      await axios.post(`http://localhost:5000/transaction/${id}/add`, data);
+      const res = await axios.post(`http://localhost:5000/transaction/${id}/add`, data);
+      setBorrower(res.data);
+      enqueueSnackbar(res?.data?.message, {
+        variant: "success",
+        autoHideDuration: 3000,
+      })
     } catch (err) {
-      console.log(err);
       enqueueSnackbar(err?.response?.data?.message || "Could not submit entry", {
         variant: "error",
         autoHideDuration: 3000,
@@ -32,19 +36,19 @@ const BorrowerDetails = (props) => {
   return (
     <Box>
       <Typography noWrap component="div" my={2}>
-        Name: {borrower.borrower.name}
+        Name: {borrower?.borrower?.name}
       </Typography>
       <Typography noWrap component="div" my={2}>
-        Address: {borrower.borrower.address}
+        Address: {borrower?.borrower?.address}
       </Typography>
       <Typography noWrap component="div" my={2}>
-        Contact: {borrower.borrower.contact}
+        Contact: {borrower?.borrower?.contact}
       </Typography>
       <Typography noWrap component="div" my={2}>
-        Occupation: {borrower.borrower.occupation}
+        Occupation: {borrower?.borrower?.occupation}
       </Typography>
       <Typography noWrap component="div" my={2}>
-        Aadhar No.: {borrower.borrower.aadhar.match(/.{1,4}/g).join(" ")}
+        Aadhar No.: {borrower?.borrower?.aadhar?.match(/.{1,4}/g).join(" ")}
       </Typography>
       <Typography noWrap component="div" my={2}>
         Loans:

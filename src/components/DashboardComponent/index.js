@@ -14,8 +14,13 @@ import React, { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useSnackbar } from "notistack";
+import { connect } from "react-redux";
+import {
+  addLoader,
+  removeLoader,
+} from "../../redux/services/actions/loaderActions";
 
-const DashboardComponent = () => {
+const DashboardComponent = (props) => {
   const [fiscalYears, setFiscalYears] = React.useState([]);
   const [selectedFiscalYear, setSelectedFiscalYear] = React.useState("");
   const [totalInvested, setTotalInvested] = React.useState(0);
@@ -29,10 +34,24 @@ const DashboardComponent = () => {
   });
 
   useEffect(() => {
-    axios.get("http://localhost:5000/summary/").then((res) => {
-      setFiscalYears(res.data.summary);
-      setSelectedFiscalYear(res.data.summary.length - 1);
-    });
+    props.addLoader();
+    axios
+      .get("http://localhost:5000/summary/")
+      .then((res) => {
+        setFiscalYears(res.data.summary);
+        setSelectedFiscalYear(res.data.summary.length - 1);
+        props.removeLoader();
+      })
+      .catch((err) => {
+        props.removeLoader();
+        enqueueSnackbar(
+          err?.response?.data?.message || "Couldn't fetch summary",
+          {
+            variant: "error",
+            autoHideDuration: 3000,
+          }
+        );
+      });
   }, []);
 
   const handleSubmit = async () => {
@@ -40,7 +59,6 @@ const DashboardComponent = () => {
       const response = await axios.post(`http://localhost:5000/summary/daily`, {
         date,
       });
-      console.log(response.data);
       setTotalInvested(response.data.total_investment || 0);
       setTotalReceived(response.data.total_received || 0);
     } catch (err) {
@@ -137,4 +155,6 @@ const DashboardComponent = () => {
   );
 };
 
-export default DashboardComponent;
+export default connect(() => ({}), { addLoader, removeLoader })(
+  DashboardComponent
+);

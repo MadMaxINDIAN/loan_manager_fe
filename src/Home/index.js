@@ -46,10 +46,6 @@ function Home(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-    });
     users.forEach((user) => {
       if (
         user.username === data.get("username") &&
@@ -57,7 +53,6 @@ function Home(props) {
       ) {
         props.login(user);
         props.removeLoader(false);
-        console.log(props.auth);
       } else {
         props.removeLoader(false);
       }

@@ -6,10 +6,14 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import DatePicker from "react-datepicker";
 import Typography from "@mui/material/Typography";
-
+import { connect } from "react-redux";
+import {
+  addLoader,
+  removeLoader,
+} from "../../redux/services/actions/loaderActions";
 import "react-datepicker/dist/react-datepicker.css";
 
-const NewAccountComponent = () => {
+const NewAccountComponent = (props) => {
   const [input, setInput] = useState({
     name: "",
     contact: "",
@@ -23,12 +27,14 @@ const NewAccountComponent = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = () => {
+    props.addLoader();
     axios
       .post("http://localhost:5000/borrower/add", input)
       .then((res) => {
         const borrower_id = res?.data?.borrower?._id;
         input.borrower_id = borrower_id;
         return axios.post("http://localhost:5000/loan/add", input).then(() => {
+          props.removeLoader();
           enqueueSnackbar("Account Created Successfully", {
             variant: "success",
             autoHideDuration: 2000,
@@ -36,7 +42,7 @@ const NewAccountComponent = () => {
         });
       })
       .catch((err) => {
-        console.log(err?.response?.data);
+        props.removeLoader();
         const message = err?.response?.data?.data
           ? err?.response?.data?.data[0].msg
           : err?.response?.data?.message;
@@ -162,4 +168,6 @@ const NewAccountComponent = () => {
   );
 };
 
-export default NewAccountComponent;
+export default connect((state) => ({}), { addLoader, removeLoader })(
+  NewAccountComponent
+);

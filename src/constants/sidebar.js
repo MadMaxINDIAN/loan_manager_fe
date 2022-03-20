@@ -20,7 +20,7 @@ const list1 = [
     route: "/dashboard/new_entry",
   },
   {
-    title: "Reports",
+    title: "Loans List",
     icon: <AssessmentRoundedIcon />,
     route: "/dashboard/reports",
   },

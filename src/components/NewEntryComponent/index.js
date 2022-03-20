@@ -7,8 +7,13 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import BorrowerDetails from "./BorrowerDetails";
 import "react-datepicker/dist/react-datepicker.css";
+import { connect } from "react-redux";
+import {
+  addLoader,
+  removeLoader,
+} from "../../redux/services/actions/loaderActions";
 
-const NewEntryComponent = () => {
+const NewEntryComponent = (props) => {
   const [name, setName] = useState();
   const [borrowers, setBorrowers] = useState([]);
   const [borrower, setBorrower] = useState();
@@ -33,13 +38,16 @@ const NewEntryComponent = () => {
       });
   };
   const handleClick = async (borrower) => {
+    props.addLoader();
     axios
       .get(`http://localhost:5000/borrower/get/${borrower._id}`)
       .then((res) => {
         setBorrower(res.data);
         setBorrowers([]);
+        props.removeLoader();
       })
       .catch((err) => {
+        props.removeLoader();
         enqueueSnackbar("Could not fetch borrower", {
           variant: "error",
           autoHideDuration: 3000,
@@ -109,9 +117,13 @@ const NewEntryComponent = () => {
           ))}
         </Box>
       </center>
-      {borrower && <BorrowerDetails borrower={borrower} setBorrower={setBorrower} />}
+      {borrower && (
+        <BorrowerDetails borrower={borrower} setBorrower={setBorrower} />
+      )}
     </div>
   );
 };
 
-export default NewEntryComponent;
+export default connect(() => ({}), { addLoader, removeLoader })(
+  NewEntryComponent
+);

@@ -27,7 +27,7 @@ const columns = [
   },
   {
     field: "amount_to_be_paid",
-    headerName: "Amount to be paid",
+    headerName: "Amount to be Paid",
     flex: 1,
   },
   {
@@ -38,6 +38,7 @@ const columns = [
 ];
 
 export default function LoansList(props) {
+  const [pageSize, setPageSize] = React.useState(50);
   let dollarIndianLocale = Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
@@ -53,16 +54,18 @@ export default function LoansList(props) {
     daily_payment: dollarIndianLocale.format(loan.daily_payment),
   }));
   return (
-    <div style={{ height: 400, width: "100%", marginTop: "50px" }}>
+    <div style={{ height: "400px", width: "100%", marginTop: "60px" }}>
       <Typography variant="h6" gutterBottom>
         Loans List
       </Typography>
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[20]}
+        pagination
         disableSelectionOnClick
+        pageSize={pageSize}
+        rowsPerPageOptions={[10, 20, 50, 100]}
+        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
       />
     </div>
   );

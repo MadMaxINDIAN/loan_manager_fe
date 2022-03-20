@@ -10,6 +10,11 @@ const BorrowerDetails = (props) => {
   const [date, setDate] = useState(new Date());
   const [amount, setAmount] = useState();
   const { enqueueSnackbar } = useSnackbar();
+  let dollarIndianLocale = Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  });
 
   const handleSubmit = async (id) => {
     const data = {
@@ -75,13 +80,13 @@ const BorrowerDetails = (props) => {
               {loan.opening_date.split("T")[0].split("-").reverse().join("/")}
             </Typography>
             <Typography noWrap component="div" my={1}>
-              {loan.loan_amount}
+              {dollarIndianLocale.format(loan.loan_amount)}
             </Typography>
             <Typography noWrap component="div" my={1}>
-              {loan.amount_to_be_paid}
+              {dollarIndianLocale.format(loan.amount_to_be_paid)}
             </Typography>
             <Typography noWrap component="div" my={1}>
-              {loan.daily_payment}
+              {dollarIndianLocale.format(loan.daily_payment)}
             </Typography>
             <Typography noWrap component="div" my={1}>
               <DatePicker

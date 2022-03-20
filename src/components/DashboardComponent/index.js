@@ -22,6 +22,11 @@ const DashboardComponent = () => {
   const [totalReceived, setTotalReceived] = React.useState(0);
   const [date, setDate] = React.useState(new Date());
   const { enqueueSnackbar } = useSnackbar();
+  let dollarIndianLocale = Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  });
 
   useEffect(() => {
     axios.get("http://localhost:5000/summary/").then((res) => {
@@ -83,7 +88,9 @@ const DashboardComponent = () => {
           <Box>
             <Typography variant="h6">Investment Amount</Typography>
             <Typography variant="p">
-              {fiscalYears[selectedFiscalYear]?.amount_invested}
+              {dollarIndianLocale.format(
+                fiscalYears[selectedFiscalYear]?.amount_invested
+              )}
             </Typography>
           </Box>
         </Grid>
@@ -91,7 +98,9 @@ const DashboardComponent = () => {
           <Box>
             <Typography variant="h6">Received Amount</Typography>
             <Typography variant="p">
-              {fiscalYears[selectedFiscalYear]?.amount_taken}
+              {dollarIndianLocale.format(
+                fiscalYears[selectedFiscalYear]?.amount_taken
+              )}
             </Typography>
           </Box>
         </Grid>
@@ -110,13 +119,17 @@ const DashboardComponent = () => {
         <Grid item lg={3}>
           <Box>
             <Typography variant="h6">Investment Amount</Typography>
-            <Typography variant="p">{totalInvested}</Typography>
+            <Typography variant="p">
+              {dollarIndianLocale.format(totalInvested)}
+            </Typography>
           </Box>
         </Grid>
         <Grid item lg={3}>
           <Box>
             <Typography variant="h6">Received Amount</Typography>
-            <Typography variant="p">{totalReceived}</Typography>
+            <Typography variant="p">
+              {dollarIndianLocale.format(totalReceived)}
+            </Typography>
           </Box>
         </Grid>
       </Grid>

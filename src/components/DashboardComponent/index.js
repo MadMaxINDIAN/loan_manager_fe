@@ -33,25 +33,25 @@ const DashboardComponent = (props) => {
     maximumFractionDigits: 0,
   });
 
-  useEffect(() => {
+  useEffect(async () => {
     props.addLoader();
-    axios
-      .get("http://localhost:5000/summary/")
-      .then((res) => {
-        setFiscalYears(res.data.summary);
-        setSelectedFiscalYear(res.data.summary.length - 1);
-        props.removeLoader();
-      })
-      .catch((err) => {
-        props.removeLoader();
-        enqueueSnackbar(
-          err?.response?.data?.message || "Couldn't fetch summary",
-          {
-            variant: "error",
-            autoHideDuration: 3000,
-          }
-        );
-      });
+    try {
+      const res = await axios.get("http://localhost:5000/summary/");
+      setFiscalYears(res.data.summary);
+      setSelectedFiscalYear(res.data.summary.length - 1);
+      const res1 = await axios.get("http://localhost:5000/summary/seven");
+      console.log(res1.data);
+      props.removeLoader();
+    } catch (err) {
+      props.removeLoader();
+      enqueueSnackbar(
+        err?.response?.data?.message || "Couldn't fetch summary",
+        {
+          variant: "error",
+          autoHideDuration: 3000,
+        }
+      );
+    }
   }, []);
 
   const handleSubmit = async () => {

@@ -27,6 +27,7 @@ const DashboardComponent = (props) => {
   const [totalReceived, setTotalReceived] = React.useState(0);
   const [date, setDate] = React.useState(new Date());
   const { enqueueSnackbar } = useSnackbar();
+  const [amount_to_be_paid, setAmountToBePaid] = React.useState(0);
   let dollarIndianLocale = Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
@@ -38,6 +39,7 @@ const DashboardComponent = (props) => {
     try {
       const res = await axios.get("http://localhost:5000/summary/");
       setFiscalYears(res.data.summary);
+      setAmountToBePaid(res.data.amount_to_be_paid);
       setSelectedFiscalYear(res.data.summary.length - 1);
       const res1 = await axios.get("http://localhost:5000/summary/seven");
       console.log(res1.data);
@@ -73,10 +75,14 @@ const DashboardComponent = (props) => {
     <div
       style={{
         marginTop: "4em",
+        padding: "2em 0em 0em 2em",
       }}
     >
-      <Grid container spacing={5}>
-        <Grid item lg={3}>
+      <Grid container spacing={2} style={{
+        border: "1px solid #e0e0e0",
+        padding: "2em",
+      }} >
+        <Grid item lg={12}>
           <FormControl fullWidth variant={"standard"}>
             <InputLabel id="demo-simple-select-label">Fiscal Year</InputLabel>
             <Select
@@ -122,6 +128,21 @@ const DashboardComponent = (props) => {
             </Typography>
           </Box>
         </Grid>
+        <Grid item lg={3}>
+          <Box>
+            <Typography variant="h6">Amount Receivable</Typography>
+            <Typography variant="body1">as of today</Typography>
+            <Typography variant="p">
+              {amount_to_be_paid ? dollarIndianLocale.format(amount_to_be_paid) : "0"}
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
+      <Grid container style={{
+        border: "1px solid #e0e0e0",
+        padding: "2em",
+        marginTop: "1em",
+      }}  spacing={2}>
         <Grid item lg={3}>
           <DatePicker
             selected={date}

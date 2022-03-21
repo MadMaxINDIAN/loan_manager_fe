@@ -15,6 +15,7 @@
     "axios": "^0.26.1",
     "notistack": "^2.0.3",
     "react": "^17.0.2",
+    "react-charts": "^3.0.0-beta.35",
     "react-datepicker": "^4.7.0",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",

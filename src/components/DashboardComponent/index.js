@@ -28,6 +28,7 @@ const DashboardComponent = (props) => {
   const [date, setDate] = React.useState(new Date());
   const { enqueueSnackbar } = useSnackbar();
   const [amount_to_be_paid, setAmountToBePaid] = React.useState(0);
+  const [seven, setSeven] = React.useState(0);
   let dollarIndianLocale = Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
@@ -42,7 +43,45 @@ const DashboardComponent = (props) => {
       setAmountToBePaid(res.data.amount_to_be_paid);
       setSelectedFiscalYear(res.data.summary.length - 1);
       const res1 = await axios.get("http://localhost:5000/summary/seven");
-      console.log(res1.data);
+      const sevendata = [];
+      const loans = [];
+      const transactions = [];
+      for (let i = 0; i < 7; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        // console.log(date.toJSON().slice(0, 10));
+        var loan = 0;
+        for (let j = 0; j < res1.data.loans.length; j++) {
+          if (
+            res1.data.loans[j]._id.slice(0, 10) === date.toJSON().slice(0, 10)
+          ) {
+            loan += res1.data.loans[j].total;
+            break;
+          }
+        }
+        loans.push([7-i-1,loan]);
+        var transaction = 0;
+        for (let j = 0; j < res1.data.transactions.length; j++) {
+          if (
+            res1.data.transactions[j]._id.slice(0, 10) === date.toJSON().slice(0, 10)
+          ) {
+            transaction += res1.data.transactions[j].total;
+            break;
+          }
+        }
+        transactions.push([7 - i - 1,transaction]);
+        const data = {
+          date, loan, transactions: transaction
+        }
+        sevendata.push(data);
+      }
+      setSeven([{
+        label: "Loans",
+        data: loans,
+      }, {
+        label: "Transactions",
+        data: transactions,
+      }])
       props.removeLoader();
     } catch (err) {
       props.removeLoader();
@@ -95,7 +134,7 @@ const DashboardComponent = (props) => {
               }}
             >
               {fiscalYears.map((year, index) => (
-                <MenuItem value={index}>{year.fin_year}</MenuItem>
+                <MenuItem key={index} value={index}>{year.fin_year}</MenuItem>
               ))}
             </Select>
           </FormControl>

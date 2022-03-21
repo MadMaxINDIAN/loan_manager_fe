@@ -7,10 +7,34 @@ import {
 } from "../../redux/services/actions/loaderActions";
 import { useSnackbar } from "notistack";
 import LoansList from "./LoansList";
+import { Box, Button } from "@mui/material";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const DashboardComponent = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const [loans, setLoans] = useState([]);
+  const [fromDate, setFromDate] = React.useState(new Date());
+  const [toDate, setToDate] = React.useState(new Date());
+
+  const handleSubmit = async () => {
+    try {
+      props.addLoader();
+      const res = await axios.post(`http://localhost:5000/loan/get/dates`, {
+        from_date: fromDate,
+        to_date: toDate,
+      });
+      setLoans(res.data.loans);
+      props.removeLoader();
+    } catch (error) {
+      props.removeLoader();
+      enqueueSnackbar(error.message, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
+  };
+
   useEffect(async () => {
     props.addLoader();
     try {
@@ -25,7 +49,34 @@ const DashboardComponent = (props) => {
       });
     }
   }, []);
-  return <LoansList loans={loans} />;
+  return (
+    <>
+      <Box
+        mt={7}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "50%",
+        }}
+      >
+        <DatePicker
+          selected={fromDate}
+          dateFormat="dd/MM/yyyy"
+          onChange={(date) => setFromDate(date)}
+        />
+        <DatePicker
+          selected={toDate}
+          dateFormat="dd/MM/yyyy"
+          onChange={(date) => setToDate(date)}
+        />
+        <Button variant="contained" size="small" onClick={handleSubmit}>
+          Go
+        </Button>
+      </Box>
+      <LoansList loans={loans} />
+    </>
+  );
 };
 
 export default connect((state) => ({}), { addLoader, removeLoader })(

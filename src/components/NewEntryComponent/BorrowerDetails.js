@@ -19,6 +19,26 @@ const BorrowerDetails = (props) => {
     maximumFractionDigits: 0,
   });
 
+  const handleBadDebt = async (loan_id) => {
+    props.addLoader();
+    await axios
+      .post(`http://localhost:5000/transaction/badDebt/${loan_id}`)
+      .then((res) => {
+        props.removeLoader();
+        enqueueSnackbar("Added to Bad Debt", {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+      })
+      .catch((err) => {
+        props.removeLoader();
+        enqueueSnackbar("Could not add bad debt", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      });
+  }
+
   const handleSubmit = async (id) => {
     props.addLoader();
     const data = {
@@ -95,7 +115,7 @@ const BorrowerDetails = (props) => {
               {dollarIndianLocale.format(loan.daily_payment)}
             </Typography>
             <Typography noWrap component="div" my={1}>
-              {Math.floor(
+              {loan.status === "bad debt" ? <Typography color="red" >BAD DEBT</Typography> : Math.floor(
                 (new Date(loan.opening_date).addDays(60).getTime() -
                   new Date().getTime()) /
                   (1000 * 3600 * 24)
@@ -110,8 +130,29 @@ const BorrowerDetails = (props) => {
               onChange={(e) => setAmount(e.target.value)}
             />
           </Box>
+          <div style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }} >
+          {Math.floor(
+                (new Date(loan.opening_date).addDays(60).getTime() -
+                  new Date().getTime()) /
+                  (1000 * 3600 * 24)
+              ) < 0 && loan.status !== "bad debt" && (
+                <Box display="flex" justifyContent="flex-end" m={2}>
+              <Button
+                variant="contained"
+                size="small"
+                color="error"
+                onClick={() => handleBadDebt(loan._id)}
+              >
+                Bad Debt
+              </Button>
+            </Box>
+              )}
           {loan.status === "active" && (
-            <Box display="flex" justifyContent="flex-end" mt={2}>
+            <Box display="flex" justifyContent="flex-end" m={2}>
               <Button
                 variant="contained"
                 size="small"
@@ -121,6 +162,7 @@ const BorrowerDetails = (props) => {
               </Button>
             </Box>
           )}
+          </div>
         </Box>
       ))}
     </Box>

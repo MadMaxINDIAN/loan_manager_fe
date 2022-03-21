@@ -81,11 +81,11 @@ export default function LoansList(props) {
     loan_amount: dollarIndianLocale.format(loan.loan_amount),
     amount_to_be_paid: dollarIndianLocale.format(loan.amount_to_be_paid),
     daily_payment: dollarIndianLocale.format(loan.daily_payment),
-    days_remaining: Math.floor(
+    days_remaining: loan.status === "bad debt" ? "-" : Math.floor(
       (new Date(loan.opening_date).addDays(60).getTime() -
         new Date().getTime()) /
         (1000 * 3600 * 24)
-    ),
+    ) ,
     status: loan.status,
   }));
   return (
@@ -97,7 +97,7 @@ export default function LoansList(props) {
         sx={{
           height: 400,
           width: 1,
-          "& .super-app-theme--actisve": {
+          "& .super-app-theme--baddebt": {
             bgcolor: (theme) =>
               getBackgroundColor(theme.palette.info.main, theme.palette.mode),
             "&:hover": {
@@ -161,7 +161,7 @@ export default function LoansList(props) {
           pageSize={pageSize}
           rowsPerPageOptions={[10, 20, 50, 100]}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          getRowClassName={(params) => `super-app-theme--${params.row.status}`}
+          getRowClassName={(params) => `super-app-theme--${params.row.status.replace(" ", "")}`}
           onCellClick={(e) => {
             navigate(`/dashboard/reports/${e.row._id}`);
           }}

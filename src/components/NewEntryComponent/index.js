@@ -73,7 +73,12 @@ const NewEntryComponent = (props) => {
             maxWidth: "700px",
           }}
         >
-          <Box flexDirection="row">
+          <Box style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
             <DatePicker
               selected={date}
               dateFormat="dd/MM/yyyy"

@@ -2,6 +2,7 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Typography, Box } from "@mui/material";
 import { darken, lighten } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 
 Date.prototype.addDays = function (days) {
   var date = new Date(this.valueOf());
@@ -16,6 +17,9 @@ const getHoverBackgroundColor = (color, mode) =>
   mode === "dark" ? darken(color, 0.5) : lighten(color, 0.5);
 
 const columns = [
+  {
+    field: "_id",
+  },
   { field: "id", headerName: "Sr. No.", width: 60, align: "center" },
   {
     field: "name",
@@ -62,12 +66,14 @@ const columns = [
 
 export default function LoansList(props) {
   const [pageSize, setPageSize] = React.useState(50);
+  const navigate = useNavigate();
   let dollarIndianLocale = Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
     maximumFractionDigits: 0,
   });
   const rows = props.loans.map((loan, index) => ({
+    _id: loan._id,
     id: loan.sr_no,
     name: loan.borrower_id.name,
     address: loan.borrower_id.address,
@@ -100,6 +106,7 @@ export default function LoansList(props) {
                   theme.palette.info.main,
                   theme.palette.mode
                 ),
+              cursor: "pointer",
             },
           },
           "& .super-app-theme--closed": {
@@ -114,6 +121,7 @@ export default function LoansList(props) {
                   theme.palette.success.main,
                   theme.palette.mode
                 ),
+              cursor: "pointer",
             },
           },
           "& .super-app-theme--active": {
@@ -128,6 +136,7 @@ export default function LoansList(props) {
                   theme.palette.warning.main,
                   theme.palette.mode
                 ),
+              cursor: "pointer",
             },
           },
           "& .super-app-theme--cosed": {
@@ -139,6 +148,7 @@ export default function LoansList(props) {
                   theme.palette.error.main,
                   theme.palette.mode
                 ),
+              cursor: "pointer",
             },
           },
         }}
@@ -152,6 +162,10 @@ export default function LoansList(props) {
           rowsPerPageOptions={[10, 20, 50, 100]}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           getRowClassName={(params) => `super-app-theme--${params.row.status}`}
+          onCellClick={(e) => {
+            navigate(`/dashboard/reports/${e.row._id}`);
+          }}
+          columnVisibilityModel={{ _id: false }}
         />
       </Box>
     </div>

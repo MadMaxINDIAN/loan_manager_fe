@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom";
 import NewAccountComponent from "./components/NewAccountComponent";
 import Home from "./Home";
 import NewEntryComponent from "./components/NewEntryComponent";
+import LoanDetails from "./components/LoanDetailsComponent";
 
 const routes = [
   {
@@ -18,6 +19,10 @@ const routes = [
       {
         path: "reports",
         element: <ReportsComponent />,
+      },
+      {
+        path: "reports/:id",
+        element: <LoanDetails />,
       },
       {
         path: "new_account",

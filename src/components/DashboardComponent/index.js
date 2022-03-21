@@ -88,7 +88,6 @@ const DashboardComponent = (props) => {
           data: transactions,
         },
       ]);
-      console.log(seven);
       props.removeLoader();
     } catch (err) {
       props.removeLoader();

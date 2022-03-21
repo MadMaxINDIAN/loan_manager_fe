@@ -49,7 +49,6 @@ const DashboardComponent = (props) => {
       for (let i = 0; i < 7; i++) {
         const date = new Date();
         date.setDate(date.getDate() - i);
-        // console.log(date.toJSON().slice(0, 10));
         var loan = 0;
         for (let j = 0; j < res1.data.loans.length; j++) {
           if (
@@ -59,29 +58,36 @@ const DashboardComponent = (props) => {
             break;
           }
         }
-        loans.push([7-i-1,loan]);
+        loans.push([7 - i - 1, loan]);
         var transaction = 0;
         for (let j = 0; j < res1.data.transactions.length; j++) {
           if (
-            res1.data.transactions[j]._id.slice(0, 10) === date.toJSON().slice(0, 10)
+            res1.data.transactions[j]._id.slice(0, 10) ===
+            date.toJSON().slice(0, 10)
           ) {
             transaction += res1.data.transactions[j].total;
             break;
           }
         }
-        transactions.push([7 - i - 1,transaction]);
+        transactions.push([7 - i - 1, transaction]);
         const data = {
-          date, loan, transactions: transaction
-        }
+          date,
+          loan,
+          transactions: transaction,
+        };
         sevendata.push(data);
       }
-      setSeven([{
-        label: "Loans",
-        data: loans,
-      }, {
-        label: "Transactions",
-        data: transactions,
-      }])
+      setSeven([
+        {
+          label: "Loans",
+          data: loans,
+        },
+        {
+          label: "Transactions",
+          data: transactions,
+        },
+      ]);
+      console.log(seven);
       props.removeLoader();
     } catch (err) {
       props.removeLoader();
@@ -117,10 +123,14 @@ const DashboardComponent = (props) => {
         padding: "2em 0em 0em 2em",
       }}
     >
-      <Grid container spacing={2} style={{
-        border: "1px solid #e0e0e0",
-        padding: "2em",
-      }} >
+      <Grid
+        container
+        spacing={2}
+        style={{
+          border: "1px solid #e0e0e0",
+          padding: "2em",
+        }}
+      >
         <Grid item lg={12}>
           <FormControl fullWidth variant={"standard"}>
             <InputLabel id="demo-simple-select-label">Fiscal Year</InputLabel>
@@ -134,7 +144,9 @@ const DashboardComponent = (props) => {
               }}
             >
               {fiscalYears.map((year, index) => (
-                <MenuItem key={index} value={index}>{year.fin_year}</MenuItem>
+                <MenuItem key={index} value={index}>
+                  {year.fin_year}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -172,16 +184,22 @@ const DashboardComponent = (props) => {
             <Typography variant="h6">Amount Receivable</Typography>
             <Typography variant="body1">as of today</Typography>
             <Typography variant="p">
-              {amount_to_be_paid ? dollarIndianLocale.format(amount_to_be_paid) : "0"}
+              {amount_to_be_paid
+                ? dollarIndianLocale.format(amount_to_be_paid)
+                : "0"}
             </Typography>
           </Box>
         </Grid>
       </Grid>
-      <Grid container style={{
-        border: "1px solid #e0e0e0",
-        padding: "2em",
-        marginTop: "1em",
-      }}  spacing={2}>
+      <Grid
+        container
+        style={{
+          border: "1px solid #e0e0e0",
+          padding: "2em",
+          marginTop: "1em",
+        }}
+        spacing={2}
+      >
         <Grid item lg={3}>
           <DatePicker
             selected={date}

@@ -1,5 +1,4 @@
 import { Button, TextField, Typography } from "@mui/material";
-import DatePicker from "react-datepicker";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useSnackbar } from "notistack";
@@ -12,7 +11,6 @@ import {
 
 const BorrowerDetails = (props) => {
   const { borrower, setBorrower } = props;
-  const [date, setDate] = useState(new Date());
   const [amount, setAmount] = useState();
   const { enqueueSnackbar } = useSnackbar();
   let dollarIndianLocale = Intl.NumberFormat("en-IN", {
@@ -24,7 +22,7 @@ const BorrowerDetails = (props) => {
   const handleSubmit = async (id) => {
     props.addLoader();
     const data = {
-      date: date,
+      date: props.date,
       amount: amount,
     };
     try {
@@ -97,12 +95,11 @@ const BorrowerDetails = (props) => {
               {dollarIndianLocale.format(loan.daily_payment)}
             </Typography>
             <Typography noWrap component="div" my={1}>
-              <DatePicker
-                selected={date}
-                disabled={loan.status === "closed"}
-                dateFormat="dd/MM/yyyy"
-                onChange={(date) => setDate(date)}
-              />
+              {Math.floor(
+                (new Date(loan.opening_date).addDays(60).getTime() -
+                  new Date().getTime()) /
+                  (1000 * 3600 * 24)
+              )}
             </Typography>
             <TextField
               id="amount"

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Button, TextField } from "@mui/material";
-import DataGrid from "../DataGrid";
+import { TextField } from "@mui/material";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import BorrowerDetails from "./BorrowerDetails";
@@ -12,11 +11,14 @@ import {
   addLoader,
   removeLoader,
 } from "../../redux/services/actions/loaderActions";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const NewEntryComponent = (props) => {
   const [name, setName] = useState();
   const [borrowers, setBorrowers] = useState([]);
   const [borrower, setBorrower] = useState();
+  const [date, setDate] = useState(new Date());
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -71,18 +73,25 @@ const NewEntryComponent = (props) => {
             maxWidth: "700px",
           }}
         >
-          <TextField
-            id="name"
-            name="name"
-            placeholder="Name"
-            variant="outlined"
-            label="Name"
-            fullWidth
-            style={{
-              marginBottom: "1em",
-            }}
-            onChange={(e) => handleChange(e.target.value)}
-          />
+          <Box flexDirection="row">
+            <DatePicker
+              selected={date}
+              dateFormat="dd/MM/yyyy"
+              onChange={(date) => setDate(date)}
+            />
+            <TextField
+              id="name"
+              name="name"
+              placeholder="Name"
+              variant="outlined"
+              label="Name"
+              fullWidth
+              style={{
+                marginBottom: "1em",
+              }}
+              onChange={(e) => handleChange(e.target.value)}
+            />
+          </Box>
           {borrowers.map((borrower, index) => (
             <Box key={index}>
               <Box
@@ -118,7 +127,11 @@ const NewEntryComponent = (props) => {
         </Box>
       </center>
       {borrower && (
-        <BorrowerDetails borrower={borrower} setBorrower={setBorrower} />
+        <BorrowerDetails
+          borrower={borrower}
+          setBorrower={setBorrower}
+          date={date}
+        />
       )}
     </div>
   );

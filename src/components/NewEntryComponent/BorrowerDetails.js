@@ -4,6 +4,11 @@ import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useSnackbar } from "notistack";
 import axios from "axios";
+import { connect } from "react-redux";
+import {
+  addLoader,
+  removeLoader,
+} from "../../redux/services/actions/loaderActions";
 
 const BorrowerDetails = (props) => {
   const { borrower, setBorrower } = props;
@@ -17,6 +22,7 @@ const BorrowerDetails = (props) => {
   });
 
   const handleSubmit = async (id) => {
+    props.addLoader();
     const data = {
       date: date,
       amount: amount,
@@ -27,11 +33,13 @@ const BorrowerDetails = (props) => {
         data
       );
       setBorrower(res.data);
+      props.removeLoader();
       enqueueSnackbar(res?.data?.message, {
         variant: "success",
         autoHideDuration: 3000,
       });
     } catch (err) {
+      props.removeLoader();
       enqueueSnackbar(
         err?.response?.data?.message || "Could not submit entry",
         {
@@ -122,4 +130,6 @@ const BorrowerDetails = (props) => {
   );
 };
 
-export default BorrowerDetails;
+export default connect(() => ({}), { addLoader, removeLoader })(
+  BorrowerDetails
+);

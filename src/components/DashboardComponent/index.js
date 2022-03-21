@@ -25,7 +25,8 @@ const DashboardComponent = (props) => {
   const [selectedFiscalYear, setSelectedFiscalYear] = React.useState("");
   const [totalInvested, setTotalInvested] = React.useState(0);
   const [totalReceived, setTotalReceived] = React.useState(0);
-  const [date, setDate] = React.useState(new Date());
+  const [fromDate, setFromDate] = React.useState(new Date());
+  const [toDate, setToDate] = React.useState(new Date());
   const { enqueueSnackbar } = useSnackbar();
   const [amount_to_be_paid, setAmountToBePaid] = React.useState(0);
   const [seven, setSeven] = React.useState(0);
@@ -102,13 +103,17 @@ const DashboardComponent = (props) => {
   }, []);
 
   const handleSubmit = async () => {
+    props.addLoader();
     try {
       const response = await axios.post(`http://localhost:5000/summary/daily`, {
-        date,
+        from_date: fromDate,
+        to_date: toDate,
       });
       setTotalInvested(response.data.total_investment || 0);
       setTotalReceived(response.data.total_received || 0);
+      props.removeLoader();
     } catch (err) {
+      props.removeLoader();
       enqueueSnackbar(err?.response?.data?.message || "Something went wrong", {
         variant: "error",
         autoHideDuration: 3000,
@@ -200,19 +205,26 @@ const DashboardComponent = (props) => {
         }}
         spacing={2}
       >
-        <Grid item lg={3}>
+        <Grid item lg={2.5}>
           <DatePicker
-            selected={date}
+            selected={fromDate}
             dateFormat="dd/MM/yyyy"
-            onChange={(date) => setDate(date)}
+            onChange={(date) => setFromDate(date)}
           />
         </Grid>
-        <Grid item lg={3}>
+        <Grid item lg={2.5}>
+          <DatePicker
+            selected={toDate}
+            dateFormat="dd/MM/yyyy"
+            onChange={(date) => setToDate(date)}
+          />
+        </Grid>
+        <Grid item lg={2}>
           <Button size="small" variant="contained" onClick={handleSubmit}>
             Go
           </Button>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item lg={2.5}>
           <Box>
             <Typography variant="h6">Investment Amount</Typography>
             <Typography variant="p">
@@ -220,7 +232,7 @@ const DashboardComponent = (props) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item lg={2.5}>
           <Box>
             <Typography variant="h6">Received Amount</Typography>
             <Typography variant="p">

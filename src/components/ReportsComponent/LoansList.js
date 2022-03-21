@@ -1,5 +1,9 @@
 import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarExport,
+} from "@mui/x-data-grid";
 import { Typography, Box } from "@mui/material";
 import { darken, lighten } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +19,14 @@ const getBackgroundColor = (color, mode) =>
 
 const getHoverBackgroundColor = (color, mode) =>
   mode === "dark" ? darken(color, 0.5) : lighten(color, 0.5);
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
 
 const columns = [
   {
@@ -41,16 +53,22 @@ const columns = [
     field: "loan_amount",
     headerName: "Loan Amount",
     flex: 1,
+    valueFormatter: ({ value }) => value.split("₹")[1],
+    renderCell: ({ value }) => value,
   },
   {
     field: "amount_to_be_paid",
     headerName: "Amount to be Paid",
     flex: 1,
+    valueFormatter: ({ value }) => value.split("₹")[1],
+    renderCell: ({ value }) => value,
   },
   {
     field: "daily_payment",
     headerName: "Daily Payment",
     flex: 1,
+    valueFormatter: ({ value }) => value.split("₹")[1],
+    renderCell: ({ value }) => value,
   },
   {
     field: "days_remaining",
@@ -171,6 +189,9 @@ export default function LoansList(props) {
             navigate(`/dashboard/reports/${e.row._id}`);
           }}
           columnVisibilityModel={{ _id: false }}
+          components={{
+            Toolbar: CustomToolbar,
+          }}
         />
       </Box>
     </div>

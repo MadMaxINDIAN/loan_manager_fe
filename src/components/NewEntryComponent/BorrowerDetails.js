@@ -115,7 +115,7 @@ const BorrowerDetails = (props) => {
               {dollarIndianLocale.format(loan.daily_payment)}
             </Typography>
             <Typography noWrap component="div" my={1}>
-              {loan.status === "bad debt" ? <Typography color="red" >BAD DEBT</Typography> : Math.floor(
+              {loan.status === "bad debt" ? <Typography color="red" >BAD DEBT</Typography> : loan.status === "closed" ?  <Typography color="green" >CLOSED</Typography> : Math.floor(
                 (new Date(loan.opening_date).addDays(60).getTime() -
                   new Date().getTime()) /
                   (1000 * 3600 * 24)

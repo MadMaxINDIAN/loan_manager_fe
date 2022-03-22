@@ -37,7 +37,7 @@ const BorrowerDetails = (props) => {
           autoHideDuration: 3000,
         });
       });
-  }
+  };
 
   const handleSubmit = async (id) => {
     props.addLoader();
@@ -115,10 +115,16 @@ const BorrowerDetails = (props) => {
               {dollarIndianLocale.format(loan.daily_payment)}
             </Typography>
             <Typography noWrap component="div" my={1}>
-              {loan.status === "bad debt" ? <Typography color="red" >BAD DEBT</Typography> : loan.status === "closed" ?  <Typography color="green" >CLOSED</Typography> : Math.floor(
-                (new Date(loan.opening_date).addDays(60).getTime() -
-                  new Date().getTime()) /
-                  (1000 * 3600 * 24)
+              {loan.status === "bad debt" ? (
+                <Typography color="red">BAD DEBT</Typography>
+              ) : loan.status === "closed" ? (
+                <Typography color="green">CLOSED</Typography>
+              ) : (
+                Math.floor(
+                  (new Date(loan.opening_date).addDays(60).getTime() -
+                    new Date().getTime()) /
+                    (1000 * 3600 * 24)
+                )
               )}
             </Typography>
             <TextField
@@ -130,38 +136,41 @@ const BorrowerDetails = (props) => {
               onChange={(e) => setAmount(e.target.value)}
             />
           </Box>
-          <div style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }} >
-          {Math.floor(
-                (new Date(loan.opening_date).addDays(60).getTime() -
-                  new Date().getTime()) /
-                  (1000 * 3600 * 24)
-              ) < 0 && loan.status !== "bad debt" && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+          >
+            {Math.floor(
+              (new Date(loan.opening_date).addDays(60).getTime() -
+                new Date().getTime()) /
+                (1000 * 3600 * 24)
+            ) < 0 &&
+              loan.status !== "bad debt" && (
                 <Box display="flex" justifyContent="flex-end" m={2}>
-              <Button
-                variant="contained"
-                size="small"
-                color="error"
-                onClick={() => handleBadDebt(loan._id)}
-              >
-                Bad Debt
-              </Button>
-            </Box>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="error"
+                    onClick={() => handleBadDebt(loan._id)}
+                  >
+                    Bad Debt
+                  </Button>
+                </Box>
               )}
-          {loan.status === "active" && (
-            <Box display="flex" justifyContent="flex-end" m={2}>
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => handleSubmit(loan._id)}
-              >
-                Add entry
-              </Button>
-            </Box>
-          )}
+            {loan.status === "active" && (
+              <Box display="flex" justifyContent="flex-end" m={2}>
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={() => handleSubmit(loan._id)}
+                >
+                  Add entry
+                </Button>
+              </Box>
+            )}
           </div>
         </Box>
       ))}

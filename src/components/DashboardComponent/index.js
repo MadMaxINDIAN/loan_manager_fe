@@ -110,6 +110,14 @@ const DashboardComponent = (props) => {
 
   const handleSubmit = async () => {
     props.addLoader();
+    if (fromDate > toDate) {
+      enqueueSnackbar("From date should be less than or equal to To date", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+      props.removeLoader();
+      return;
+    }
     try {
       const response = await axios.post(`http://localhost:5000/summary/daily`, {
         from_date: fromDate,

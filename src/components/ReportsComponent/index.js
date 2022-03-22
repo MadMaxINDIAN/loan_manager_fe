@@ -18,6 +18,14 @@ const DashboardComponent = (props) => {
   const [toDate, setToDate] = React.useState(new Date());
 
   const handleSubmit = async () => {
+    if (fromDate > toDate) {
+      enqueueSnackbar("From date should be less than or equal to To date", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+      props.removeLoader();
+      return;
+    }
     try {
       props.addLoader();
       const res = await axios.post(`http://localhost:5000/loan/get/dates`, {

@@ -19,6 +19,7 @@ import {
   addLoader,
   removeLoader,
 } from "../../redux/services/actions/loaderActions";
+import Graph from "./Graph";
 
 const DashboardComponent = (props) => {
   const [fiscalYears, setFiscalYears] = React.useState([]);
@@ -88,6 +89,12 @@ const DashboardComponent = (props) => {
           data: transactions,
         },
       ]);
+      const res2 = await axios.post(`http://localhost:5000/summary/daily`, {
+        from_date: new Date().toISOString(),
+        to_date: new Date().toISOString(),
+      });
+      setTotalInvested(res2.data.total_investment || 0);
+      setTotalReceived(res2.data.total_received || 0);
       props.removeLoader();
     } catch (err) {
       props.removeLoader();
@@ -238,6 +245,19 @@ const DashboardComponent = (props) => {
               {dollarIndianLocale.format(totalReceived)}
             </Typography>
           </Box>
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        spacing={2}
+        style={{
+          border: "1px solid #e0e0e0",
+          padding: "2em",
+          marginTop: "1em",
+        }}
+      >
+        <Grid item lg={8}>
+          {seven && <Graph seven={seven} />}
         </Grid>
       </Grid>
     </div>

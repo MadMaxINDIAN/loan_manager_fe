@@ -25,6 +25,12 @@ const Graph = (props) => {
         count: 7,
       },
     },
+    vAxis: {
+      title: "Amount",
+      gridlines: {
+        count: 7,
+      },
+    },
   };
   return (
     <div>

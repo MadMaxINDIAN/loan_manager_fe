@@ -20,6 +20,9 @@ const getBackgroundColor = (color, mode) =>
 const getHoverBackgroundColor = (color, mode) =>
   mode === "dark" ? darken(color, 0.5) : lighten(color, 0.5);
 
+const today = new Date();
+today.setHours(5, 30, 0, 0);
+
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
@@ -58,7 +61,7 @@ const columns = [
   },
   {
     field: "amount_to_be_paid",
-    headerName: "Amount to be Paid",
+    headerName: "Amount Remaining",
     flex: 1,
     valueFormatter: ({ value }) => value.split("₹")[1],
     renderCell: ({ value }) => value,
@@ -100,24 +103,30 @@ export default function LoansList(props) {
     amount_to_be_paid: dollarIndianLocale.format(loan.amount_to_be_paid),
     daily_payment: dollarIndianLocale.format(loan.daily_payment),
     days_remaining:
-      loan.status === "bad debt"
-        ? "-"
-        : Math.floor(
-            (new Date(loan.opening_date).addDays(60).getTime() -
-              new Date().getTime()) /
+      loan.status === "active"
+        ? Math.floor(
+            (new Date(loan.opening_date).addDays(59).getTime() -
+              today.getTime()) /
               (1000 * 3600 * 24)
-          ),
+          )
+        : "-",
     status: loan.status,
   }));
   return (
-    <div style={{ height: "400px", width: "100%", marginTop: "20px" }}>
+    <div
+      style={{
+        height: "400px",
+        width: "100%",
+        marginTop: "20px",
+      }}
+    >
       <Typography variant="h6" gutterBottom>
         Loans List
       </Typography>
       <Box
         sx={{
           height: 400,
-          width: 1,
+          minWidth: "900px",
           "& .super-app-theme--baddebt": {
             bgcolor: (theme) =>
               getBackgroundColor(theme.palette.info.main, theme.palette.mode),

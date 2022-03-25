@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 
 const Details = ({ loan }) => {
-  console.log(loan.payments);
-
+  const today = new Date();
+  today.setHours(5, 30, 0, 0);
   Date.prototype.addDays = function (days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
@@ -34,18 +34,20 @@ const Details = ({ loan }) => {
         Loan Amount: {dollarIndianLocale.format(loan?.loan_amount)}
       </Typography>
       <Typography noWrap component="div" my={2}>
-        Amount to be Paid: {dollarIndianLocale.format(loan?.amount_to_be_paid)}
+        Amount Remaining: {dollarIndianLocale.format(loan?.amount_to_be_paid)}
       </Typography>
       <Typography noWrap component="div" my={2}>
         Daily Payment: {dollarIndianLocale.format(loan?.daily_payment)}
       </Typography>
       <Typography noWrap component="div" my={2}>
         Days Remaining:{" "}
-        {Math.floor(
-          (new Date(loan.opening_date).addDays(60).getTime() -
-            new Date().getTime()) /
-            (1000 * 3600 * 24)
-        )}
+        {loan.status === "active"
+          ? Math.floor(
+              (new Date(loan.opening_date.substr(0, 10)).addDays(59).getTime() -
+                today.getTime()) /
+                (1000 * 3600 * 24)
+            )
+          : "-"}
       </Typography>
       <Typography noWrap component="div" my={2}>
         Status: {loan?.status}

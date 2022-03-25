@@ -10,7 +10,8 @@ import {
 } from "../../redux/services/actions/loaderActions";
 
 const BorrowerDetails = (props) => {
-  console.log(props)
+  const today = new Date();
+  today.setHours(5, 30, 0, 0);
   const { borrower, setBorrower } = props;
   const [amount, setAmount] = useState();
   const { enqueueSnackbar } = useSnackbar();
@@ -46,7 +47,7 @@ const BorrowerDetails = (props) => {
     const data = {
       date: props.date,
       amount: amount,
-      user: props?.auth?.user?.username
+      user: props?.auth?.user?.username,
     };
     try {
       const res = await axios.post(
@@ -124,8 +125,8 @@ const BorrowerDetails = (props) => {
                 <Typography color="green">CLOSED</Typography>
               ) : (
                 Math.floor(
-                  (new Date(loan.opening_date).addDays(60).getTime() -
-                    new Date().getTime()) /
+                  (new Date(loan.opening_date).addDays(59).getTime() -
+                    today.getTime()) /
                     (1000 * 3600 * 24)
                 )
               )}
@@ -147,8 +148,8 @@ const BorrowerDetails = (props) => {
             }}
           >
             {Math.floor(
-              (new Date(loan.opening_date).addDays(60).getTime() -
-                new Date().getTime()) /
+              (new Date(loan.opening_date).addDays(59).getTime() -
+                today.getTime()) /
                 (1000 * 3600 * 24)
             ) < 0 &&
               loan.status !== "bad debt" && (
@@ -181,8 +182,9 @@ const BorrowerDetails = (props) => {
   );
 };
 
-export default connect((state) => ({
-  auth: state.auth
-}), { addLoader, removeLoader })(
-  BorrowerDetails
-);
+export default connect(
+  (state) => ({
+    auth: state.auth,
+  }),
+  { addLoader, removeLoader }
+)(BorrowerDetails);

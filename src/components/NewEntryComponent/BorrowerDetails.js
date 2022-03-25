@@ -25,6 +25,7 @@ const BorrowerDetails = (props) => {
       .post(`http://localhost:5000/transaction/badDebt/${loan_id}`)
       .then((res) => {
         props.removeLoader();
+        setBorrower(res.data);
         enqueueSnackbar("Added to Bad Debt", {
           variant: "success",
           autoHideDuration: 3000,

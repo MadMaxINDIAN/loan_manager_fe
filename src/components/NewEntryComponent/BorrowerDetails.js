@@ -10,6 +10,7 @@ import {
 } from "../../redux/services/actions/loaderActions";
 
 const BorrowerDetails = (props) => {
+  console.log(props)
   const { borrower, setBorrower } = props;
   const [amount, setAmount] = useState();
   const { enqueueSnackbar } = useSnackbar();
@@ -45,6 +46,7 @@ const BorrowerDetails = (props) => {
     const data = {
       date: props.date,
       amount: amount,
+      user: props?.auth?.user?.username
     };
     try {
       const res = await axios.post(
@@ -179,6 +181,8 @@ const BorrowerDetails = (props) => {
   );
 };
 
-export default connect(() => ({}), { addLoader, removeLoader })(
+export default connect((state) => ({
+  auth: state.auth
+}), { addLoader, removeLoader })(
   BorrowerDetails
 );

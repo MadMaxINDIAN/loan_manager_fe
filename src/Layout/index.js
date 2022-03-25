@@ -12,11 +12,17 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import sidebar from "../constants/sidebar";
+import { connect } from "react-redux";
 
 const drawerWidth = 200;
 
-export default function Layout(props) {
+function Layout(props) {
   const navigate = useNavigate();
+  React.useEffect(() => {
+    if (!props?.auth?.isAuthenticated) {
+      navigate("/");
+    }
+  }), [props.auth.isAuthenticated];
   const { pathname } = useLocation();
   return (
     <Box sx={{ display: "flex" }}>
@@ -74,3 +80,7 @@ export default function Layout(props) {
     </Box>
   );
 }
+
+export default connect((state) => ({
+  auth: state.auth
+}), null)(Layout);

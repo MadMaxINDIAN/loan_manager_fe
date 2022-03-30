@@ -9,6 +9,7 @@ class StateLoader {
             }
             const data = JSON.parse(serializedState);
             data.errors = {};
+            data.auth = {};
             // data.loading.isLoading = false;
             return data;
         }

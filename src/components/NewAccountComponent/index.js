@@ -18,11 +18,11 @@ const NewAccountComponent = (props) => {
     name: "",
     contact: "",
     aadhar: "",
-    address: "",
     occupation: "",
     opening_date: new Date(),
     loan_amount: "",
     sr_no: "",
+    loan_period: "",
   });
   const { enqueueSnackbar } = useSnackbar();
 
@@ -63,9 +63,9 @@ const NewAccountComponent = (props) => {
           <TextField
             id="name"
             name="name"
-            placeholder="Name"
+            placeholder="Name & Address"
             variant="outlined"
-            label="Name"
+            label="Name & Address"
             fullWidth
             onChange={(e) =>
               setInput({ ...input, [e.target.name]: e.target.value })
@@ -111,20 +111,7 @@ const NewAccountComponent = (props) => {
             }
           />
         </Grid>
-        <Grid item xs={12} sm={6} lg={4}>
-          <TextField
-            id="address"
-            name="address"
-            placeholder="Address"
-            variant="outlined"
-            label="Address"
-            fullWidth
-            onChange={(e) =>
-              setInput({ ...input, [e.target.name]: e.target.value })
-            }
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} lg={4}></Grid>
+        <Grid item xs={12} lg={8}></Grid>
         <Grid item xs={12} sm={6} lg={4}>
           <TextField
             id="sr_no"
@@ -152,6 +139,19 @@ const NewAccountComponent = (props) => {
             placeholder="Loan Amount"
             variant="outlined"
             label="Loan Amount"
+            fullWidth
+            onChange={(e) =>
+              setInput({ ...input, [e.target.name]: e.target.value })
+            }
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} lg={4}>
+          <TextField
+            id="loan_period"
+            name="loan_period"
+            placeholder="Loan Period"
+            variant="outlined"
+            label="Loan Period"
             fullWidth
             onChange={(e) =>
               setInput({ ...input, [e.target.name]: e.target.value })

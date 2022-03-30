@@ -73,12 +73,14 @@ const NewEntryComponent = (props) => {
             maxWidth: "700px",
           }}
         >
-          <Box style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}>
+          <Box
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <DatePicker
               selected={date}
               dateFormat="dd/MM/yyyy"
@@ -113,9 +115,6 @@ const NewEntryComponent = (props) => {
               >
                 <Typography noWrap component="div" my={2}>
                   {borrower.name}
-                </Typography>
-                <Typography noWrap component="div" my={2}>
-                  {borrower.address}
                 </Typography>
                 <Typography noWrap component="div" my={2}>
                   {borrower.contact}

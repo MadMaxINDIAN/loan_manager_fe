@@ -22,7 +22,8 @@ function Layout(props) {
     if (!props?.auth?.isAuthenticated) {
       navigate("/");
     }
-  }), [props.auth.isAuthenticated];
+  }),
+    [props.auth.isAuthenticated];
   const { pathname } = useLocation();
   return (
     <Box sx={{ display: "flex" }}>
@@ -81,6 +82,9 @@ function Layout(props) {
   );
 }
 
-export default connect((state) => ({
-  auth: state.auth
-}), null)(Layout);
+export default connect(
+  (state) => ({
+    auth: state.auth,
+  }),
+  null
+)(Layout);

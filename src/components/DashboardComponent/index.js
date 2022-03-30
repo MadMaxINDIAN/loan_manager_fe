@@ -22,8 +22,8 @@ import {
 import Graph from "./Graph";
 
 const DashboardComponent = (props) => {
-  const [fiscalYears, setFiscalYears] = React.useState([]);
-  const [selectedFiscalYear, setSelectedFiscalYear] = React.useState("");
+  const [summary, setSummary] = React.useState();
+  const [amountReceivable, setAmountReceivable] = React.useState(0);
   const [totalInvested, setTotalInvested] = React.useState(0);
   const [totalReceived, setTotalReceived] = React.useState(0);
   const [fromDate, setFromDate] = React.useState(new Date());
@@ -41,9 +41,9 @@ const DashboardComponent = (props) => {
     props.addLoader();
     try {
       const res = await axios.get("http://localhost:5000/summary/");
-      setFiscalYears(res.data.summary);
-      setAmountToBePaid(res.data.amount_to_be_paid);
-      setSelectedFiscalYear(res.data.summary.length - 1);
+      setAmountToBePaid(res.data.amount_to_be_paid || 0);
+      setAmountReceivable(res.data.amount_receivable || 0);
+      setSummary(res.data.summary);
       const res1 = await axios.get("http://localhost:5000/summary/seven");
       const sevendata = [];
       const loans = [];
@@ -150,62 +150,37 @@ const DashboardComponent = (props) => {
           padding: "2em",
         }}
       >
-        <Grid item lg={12}>
-          <FormControl fullWidth variant={"standard"}>
-            <InputLabel id="demo-simple-select-label">Fiscal Year</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selectedFiscalYear}
-              label="Fiscal Year"
-              onChange={(e) => {
-                setSelectedFiscalYear(e.target.value);
-              }}
-            >
-              {fiscalYears.map((year, index) => (
-                <MenuItem key={index} value={index}>
-                  {year.fin_year}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item lg={3}>
-          <Box style={{}}>
-            <Typography variant="h6">Fiscal Year</Typography>
-            <Typography variant="p">
-              {fiscalYears[selectedFiscalYear]?.fin_year}
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} md={6} lg={3}>
           <Box>
             <Typography variant="h6">Investment Amount</Typography>
             <Typography variant="p">
-              {dollarIndianLocale.format(
-                fiscalYears[selectedFiscalYear]?.amount_invested
-              )}
+              {dollarIndianLocale.format(summary?.amount_invested)}
             </Typography>
           </Box>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} md={6} lg={3}>
           <Box>
             <Typography variant="h6">Received Amount</Typography>
             <Typography variant="p">
-              {dollarIndianLocale.format(
-                fiscalYears[selectedFiscalYear]?.amount_taken
-              )}
+              {dollarIndianLocale.format(summary?.amount_taken)}
             </Typography>
           </Box>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item xs={12} md={6} lg={3}>
           <Box>
             <Typography variant="h6">Amount Receivable</Typography>
             <Typography variant="body1">as of today</Typography>
             <Typography variant="p">
-              {amount_to_be_paid
-                ? dollarIndianLocale.format(amount_to_be_paid)
-                : "0"}
+              {dollarIndianLocale.format(amount_to_be_paid)}
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
+          <Box>
+            <Typography variant="h6">Amount Receivable</Typography>
+            <Typography variant="body1">today</Typography>
+            <Typography variant="p">
+              {dollarIndianLocale.format(amountReceivable)}
             </Typography>
           </Box>
         </Grid>

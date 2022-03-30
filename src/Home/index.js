@@ -14,6 +14,8 @@ import {
 } from "../redux/services/actions/loaderActions";
 import { users } from "../constants/users";
 import { login } from "../redux/services/actions/authActions";
+import { useSnackbar } from "notistack";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
@@ -37,26 +39,27 @@ function Copyright(props) {
 const theme = createTheme();
 
 function Home(props) {
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  React.useEffect(() => {
-    if (props.auth.isAuthenticated) {
-      navigate("/dashboard");
-    }
-  }, [props.auth.isAuthenticated]);
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    users.forEach((user) => {
-      if (
-        user.username === data.get("username") &&
-        user.password === data.get("password")
-      ) {
-        props.login(user);
-        props.removeLoader(false);
-      } else {
-        props.removeLoader(false);
-      }
-    });
+    try {
+      const response = await axios.post("http://localhost:5000/auth/login", {
+        username: data.get("username"),
+        password: data.get("password"),
+      });
+      props.login(response.data.token);
+      props.removeLoader();
+      navigate("/dashboard");
+    } catch (err) {
+      enqueueSnackbar(err?.response?.data?.message || "Could not login", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+      props.removeLoader();
+    }
   };
 
   return (

@@ -24,9 +24,6 @@ const Details = ({ loan }) => {
         Name: {loan?.borrower_id?.name}
       </Typography>
       <Typography noWrap component="div" my={2}>
-        Address: {loan?.borrower_id?.address}
-      </Typography>
-      <Typography noWrap component="div" my={2}>
         Opening Date:{" "}
         {loan?.opening_date.slice(0, 10).split("-").reverse().join("/")}
       </Typography>
@@ -43,7 +40,9 @@ const Details = ({ loan }) => {
         Days Remaining:{" "}
         {loan.status === "active"
           ? Math.floor(
-              (new Date(loan.opening_date.substr(0, 10)).addDays(59).getTime() -
+              (new Date(loan.opening_date.substr(0, 10))
+                .addDays(loan.loan_period)
+                .getTime() -
                 today.getTime()) /
                 (1000 * 3600 * 24)
             )

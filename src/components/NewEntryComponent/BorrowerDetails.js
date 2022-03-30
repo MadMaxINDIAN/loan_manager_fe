@@ -78,9 +78,6 @@ const BorrowerDetails = (props) => {
         Name: {borrower?.borrower?.name}
       </Typography>
       <Typography noWrap component="div" my={2}>
-        Address: {borrower?.borrower?.address}
-      </Typography>
-      <Typography noWrap component="div" my={2}>
         Contact: {borrower?.borrower?.contact}
       </Typography>
       <Typography noWrap component="div" my={2}>
@@ -125,7 +122,9 @@ const BorrowerDetails = (props) => {
                 <Typography color="green">CLOSED</Typography>
               ) : (
                 Math.floor(
-                  (new Date(loan.opening_date).addDays(59).getTime() -
+                  (new Date(loan.opening_date)
+                    .addDays(loan.loan_period)
+                    .getTime() -
                     today.getTime()) /
                     (1000 * 3600 * 24)
                 )
@@ -148,7 +147,7 @@ const BorrowerDetails = (props) => {
             }}
           >
             {Math.floor(
-              (new Date(loan.opening_date).addDays(59).getTime() -
+              (new Date(loan.opening_date).addDays(loan.loan_period).getTime() -
                 today.getTime()) /
                 (1000 * 3600 * 24)
             ) < 0 &&

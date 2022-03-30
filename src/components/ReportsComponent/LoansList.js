@@ -42,46 +42,41 @@ const columns = [
     flex: 1,
   },
   {
-    field: "address",
-    headerName: "Address",
-    flex: 1,
-  },
-  {
     field: "opening_date",
     headerName: "Opening Date",
     type: "date",
-    flex: 1,
+    width: 120,
   },
   {
     field: "loan_amount",
     headerName: "Loan Amount",
-    flex: 1,
+    width: 120,
     valueFormatter: ({ value }) => value.split("₹")[1],
     renderCell: ({ value }) => value,
   },
   {
     field: "amount_to_be_paid",
     headerName: "Amount Remaining",
-    flex: 1,
+    width: 150,
     valueFormatter: ({ value }) => value.split("₹")[1],
     renderCell: ({ value }) => value,
   },
   {
     field: "daily_payment",
     headerName: "Daily Payment",
-    flex: 1,
+    width: 120,
     valueFormatter: ({ value }) => value.split("₹")[1],
     renderCell: ({ value }) => value,
   },
   {
     field: "days_remaining",
     headerName: "Days Remaining",
-    flex: 1,
+    width: 120,
   },
   {
     field: "status",
     headerName: "Status",
-    flex: 1,
+    width: 70,
   },
 ];
 
@@ -97,7 +92,6 @@ export default function LoansList(props) {
     _id: loan._id,
     id: loan.sr_no,
     name: loan.borrower_id.name,
-    address: loan.borrower_id.address,
     opening_date: loan.opening_date.slice(0, 10).split("-").reverse().join("/"),
     loan_amount: dollarIndianLocale.format(loan.loan_amount),
     amount_to_be_paid: dollarIndianLocale.format(loan.amount_to_be_paid),
@@ -105,7 +99,7 @@ export default function LoansList(props) {
     days_remaining:
       loan.status === "active"
         ? Math.floor(
-            (new Date(loan.opening_date).addDays(59).getTime() -
+            (new Date(loan.opening_date).addDays(loan.loan_period).getTime() -
               today.getTime()) /
               (1000 * 3600 * 24)
           )

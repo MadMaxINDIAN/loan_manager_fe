@@ -16,6 +16,11 @@ const DashboardComponent = (props) => {
   const [loans, setLoans] = useState([]);
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(new Date());
+  const config = {
+    headers: {
+      Authorization: `Bearer ${props.auth.token}`,
+    },
+  };
 
   const handleSubmit = async () => {
     if (fromDate > toDate) {
@@ -28,10 +33,14 @@ const DashboardComponent = (props) => {
     }
     try {
       props.addLoader();
-      const res = await axios.post(`http://localhost:5000/loan/get/dates`, {
-        from_date: fromDate,
-        to_date: toDate,
-      });
+      const res = await axios.post(
+        `http://localhost:5000/loan/get/dates`,
+        {
+          from_date: fromDate,
+          to_date: toDate,
+        },
+        config
+      );
       setLoans(res.data.loans);
       props.removeLoader();
     } catch (error) {
@@ -46,7 +55,7 @@ const DashboardComponent = (props) => {
   useEffect(async () => {
     props.addLoader();
     try {
-      const result = await axios.get("http://localhost:5000/loan/get");
+      const result = await axios.get("http://localhost:5000/loan/get", config);
       setLoans(result.data.loans);
       props.removeLoader();
     } catch (err) {
@@ -87,6 +96,9 @@ const DashboardComponent = (props) => {
   );
 };
 
-export default connect((state) => ({}), { addLoader, removeLoader })(
-  DashboardComponent
-);
+export default connect(
+  (state) => ({
+    auth: state.auth,
+  }),
+  { addLoader, removeLoader }
+)(DashboardComponent);

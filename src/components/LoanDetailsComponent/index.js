@@ -12,10 +12,18 @@ import Details from "./Details";
 const LoanDetails = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const [loan, setLoan] = useState();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${props.auth.token}`,
+    },
+  };
   useEffect(async () => {
     props.addLoader();
     try {
-      const res = await axios.get(`http://localhost:5000/loan/get/${id}`);
+      const res = await axios.get(
+        `http://localhost:5000/loan/get/${id}`,
+        config
+      );
       setLoan(res.data.loan);
       props.removeLoader();
     } catch (err) {
@@ -30,4 +38,9 @@ const LoanDetails = (props) => {
   return <>{loan && <Details loan={loan} />}</>;
 };
 
-export default connect(() => ({}), { addLoader, removeLoader })(LoanDetails);
+export default connect(
+  (state) => ({
+    auth: state.auth,
+  }),
+  { addLoader, removeLoader }
+)(LoanDetails);

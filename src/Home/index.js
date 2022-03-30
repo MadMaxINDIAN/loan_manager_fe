@@ -41,15 +41,24 @@ const theme = createTheme();
 function Home(props) {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${props.auth.token}`,
+    },
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     try {
-      const response = await axios.post("http://localhost:5000/auth/login", {
-        username: data.get("username"),
-        password: data.get("password"),
-      });
+      const response = await axios.post(
+        "http://localhost:5000/auth/login",
+        {
+          username: data.get("username"),
+          password: data.get("password"),
+        },
+        config
+      );
       props.login(response.data.token);
       props.removeLoader();
       navigate("/dashboard");

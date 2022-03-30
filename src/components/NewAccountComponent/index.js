@@ -25,21 +25,28 @@ const NewAccountComponent = (props) => {
     loan_period: "",
   });
   const { enqueueSnackbar } = useSnackbar();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${props.auth.token}`,
+    },
+  };
 
   const handleSubmit = () => {
     props.addLoader();
     axios
-      .post("http://localhost:5000/borrower/add", input)
+      .post("http://localhost:5000/borrower/add", input, config)
       .then((res) => {
         const borrower_id = res?.data?.borrower?._id;
         input.borrower_id = borrower_id;
-        return axios.post("http://localhost:5000/loan/add", input).then(() => {
-          props.removeLoader();
-          enqueueSnackbar("Account Created Successfully", {
-            variant: "success",
-            autoHideDuration: 2000,
+        return axios
+          .post("http://localhost:5000/loan/add", input, config)
+          .then(() => {
+            props.removeLoader();
+            enqueueSnackbar("Account Created Successfully", {
+              variant: "success",
+              autoHideDuration: 2000,
+            });
           });
-        });
       })
       .catch((err) => {
         props.removeLoader();
@@ -168,6 +175,9 @@ const NewAccountComponent = (props) => {
   );
 };
 
-export default connect((state) => ({}), { addLoader, removeLoader })(
-  NewAccountComponent
-);
+export default connect(
+  (state) => ({
+    auth: state.auth,
+  }),
+  { addLoader, removeLoader }
+)(NewAccountComponent);

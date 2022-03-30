@@ -21,6 +21,11 @@ const NewEntryComponent = (props) => {
   const [date, setDate] = useState(new Date());
 
   const { enqueueSnackbar } = useSnackbar();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${props.auth.token}`,
+    },
+  };
 
   const handleChange = (name) => {
     setBorrower();
@@ -28,7 +33,7 @@ const NewEntryComponent = (props) => {
       return setBorrowers([]);
     }
     axios
-      .get(`http://localhost:5000/borrower/get?search=${name}`)
+      .get(`http://localhost:5000/borrower/get?search=${name}`, config)
       .then((response) => {
         setBorrowers(response.data.borrowers);
       })
@@ -42,7 +47,7 @@ const NewEntryComponent = (props) => {
   const handleClick = async (borrower) => {
     props.addLoader();
     axios
-      .get(`http://localhost:5000/borrower/get/${borrower._id}`)
+      .get(`http://localhost:5000/borrower/get/${borrower._id}`, config)
       .then((res) => {
         setBorrower(res.data);
         setBorrowers([]);
@@ -123,7 +128,9 @@ const NewEntryComponent = (props) => {
                   {borrower.occupation}
                 </Typography>
                 <Typography noWrap component="div" my={2}>
-                  {borrower.aadhar.match(/.{1,4}/g).join(" ")}
+                  {borrower?.aadhar
+                    ? borrower?.aadhar?.match(/.{1,4}/g)?.join(" ")
+                    : "-"}
                 </Typography>
               </Box>
             </Box>
@@ -141,6 +148,9 @@ const NewEntryComponent = (props) => {
   );
 };
 
-export default connect(() => ({}), { addLoader, removeLoader })(
-  NewEntryComponent
-);
+export default connect(
+  (state) => ({
+    auth: state.auth,
+  }),
+  { addLoader, removeLoader }
+)(NewEntryComponent);

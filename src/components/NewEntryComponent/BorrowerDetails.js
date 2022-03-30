@@ -20,11 +20,16 @@ const BorrowerDetails = (props) => {
     currency: "INR",
     maximumFractionDigits: 0,
   });
+  const config = {
+    headers: {
+      Authorization: `Bearer ${props.auth.token}`,
+    },
+  };
 
   const handleBadDebt = async (loan_id) => {
     props.addLoader();
     await axios
-      .post(`http://localhost:5000/transaction/badDebt/${loan_id}`)
+      .post(`http://localhost:5000/transaction/badDebt/${loan_id}`, config)
       .then((res) => {
         props.removeLoader();
         setBorrower(res.data);
@@ -52,7 +57,8 @@ const BorrowerDetails = (props) => {
     try {
       const res = await axios.post(
         `http://localhost:5000/transaction/${id}/add`,
-        data
+        data,
+        config
       );
       setBorrower(res.data);
       props.removeLoader();
@@ -84,7 +90,10 @@ const BorrowerDetails = (props) => {
         Occupation: {borrower?.borrower?.occupation}
       </Typography>
       <Typography noWrap component="div" my={2}>
-        Aadhar No.: {borrower?.borrower?.aadhar?.match(/.{1,4}/g).join(" ")}
+        Aadhar No.:{" "}
+        {borrower?.borrower?.aadhar
+          ? borrower?.borrower?.aadhar?.match(/.{1,4}/g)?.join(" ")
+          : "-"}
       </Typography>
       <Typography noWrap component="div" my={2}>
         Loans:

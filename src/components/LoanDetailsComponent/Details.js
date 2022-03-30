@@ -24,6 +24,12 @@ const Details = ({ loan }) => {
         Name: {loan?.borrower_id?.name}
       </Typography>
       <Typography noWrap component="div" my={2}>
+        Aadhar No.:{" "}
+        {loan?.borrower_id?.aadhar
+          ? loan?.borrower_id?.aadhar?.match(/.{1,4}/g)?.join(" ")
+          : "-"}
+      </Typography>
+      <Typography noWrap component="div" my={2}>
         Opening Date:{" "}
         {loan?.opening_date.slice(0, 10).split("-").reverse().join("/")}
       </Typography>

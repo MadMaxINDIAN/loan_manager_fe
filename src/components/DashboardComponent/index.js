@@ -36,15 +36,23 @@ const DashboardComponent = (props) => {
     currency: "INR",
     maximumFractionDigits: 0,
   });
+  const config = {
+    headers: {
+      Authorization: `Bearer ${props.auth.token}`,
+    },
+  };
 
   useEffect(async () => {
     props.addLoader();
     try {
-      const res = await axios.get("http://localhost:5000/summary/");
+      const res = await axios.get("http://localhost:5000/summary/", config);
       setAmountToBePaid(res.data.amount_to_be_paid || 0);
       setAmountReceivable(res.data.amount_receivable || 0);
       setSummary(res.data.summary);
-      const res1 = await axios.get("http://localhost:5000/summary/seven");
+      const res1 = await axios.get(
+        "http://localhost:5000/summary/seven",
+        config
+      );
       const sevendata = [];
       const loans = [];
       const transactions = [];
@@ -89,10 +97,14 @@ const DashboardComponent = (props) => {
           data: transactions,
         },
       ]);
-      const res2 = await axios.post(`http://localhost:5000/summary/daily`, {
-        from_date: new Date().toISOString(),
-        to_date: new Date().toISOString(),
-      });
+      const res2 = await axios.post(
+        `http://localhost:5000/summary/daily`,
+        {
+          from_date: new Date().toISOString(),
+          to_date: new Date().toISOString(),
+        },
+        config
+      );
       setTotalInvested(res2.data.total_investment || 0);
       setTotalReceived(res2.data.total_received || 0);
       props.removeLoader();
@@ -119,10 +131,14 @@ const DashboardComponent = (props) => {
       return;
     }
     try {
-      const response = await axios.post(`http://localhost:5000/summary/daily`, {
-        from_date: fromDate,
-        to_date: toDate,
-      });
+      const response = await axios.post(
+        `http://localhost:5000/summary/daily`,
+        {
+          from_date: fromDate,
+          to_date: toDate,
+        },
+        config
+      );
       setTotalInvested(response.data.total_investment || 0);
       setTotalReceived(response.data.total_received || 0);
       props.removeLoader();
@@ -247,6 +263,9 @@ const DashboardComponent = (props) => {
   );
 };
 
-export default connect(() => ({}), { addLoader, removeLoader })(
-  DashboardComponent
-);
+export default connect(
+  (state) => ({
+    auth: state.auth,
+  }),
+  { addLoader, removeLoader }
+)(DashboardComponent);

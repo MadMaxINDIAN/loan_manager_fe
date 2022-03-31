@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { TextField } from "@mui/material";
 import axios from "axios";
+import List from "./List";
 import { useSnackbar } from "notistack";
 import BorrowerDetails from "./BorrowerDetails";
 import "react-datepicker/dist/react-datepicker.css";
@@ -73,6 +74,7 @@ const NewEntryComponent = (props) => {
             />
           </Box>
         </Box>
+        <List loans={loans} date={date} addLoader={props.addLoader} removeLoader={props.removeLoader} />
       </center>
     </div>
   );

@@ -15,9 +15,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const NewEntryComponent = (props) => {
-  const [name, setName] = useState();
-  const [borrowers, setBorrowers] = useState([]);
-  const [borrower, setBorrower] = useState();
+  const [loans, setLoans] = useState([]);
   const [date, setDate] = useState(new Date());
 
   const { enqueueSnackbar } = useSnackbar();
@@ -26,41 +24,23 @@ const NewEntryComponent = (props) => {
       Authorization: `Bearer ${props.auth.token}`,
     },
   };
-
-  const handleChange = (name) => {
-    setBorrower();
-    if (!name) {
-      return setBorrowers([]);
-    }
-    axios
-      .get(`http://localhost:5000/borrower/get?search=${name}`, config)
-      .then((response) => {
-        setBorrowers(response.data.borrowers);
-      })
-      .catch((error) => {
-        enqueueSnackbar("Could not fetch borrowers", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      });
-  };
-  const handleClick = async (borrower) => {
+  React.useEffect(async () => {
     props.addLoader();
-    axios
-      .get(`http://localhost:5000/borrower/get/${borrower._id}`, config)
-      .then((res) => {
-        setBorrower(res.data);
-        setBorrowers([]);
-        props.removeLoader();
-      })
-      .catch((err) => {
-        props.removeLoader();
-        enqueueSnackbar("Could not fetch borrower", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/loan/get/active",
+        config
+      );
+      setLoans(res.data.loans);
+      props.removeLoader();
+    } catch (err) {
+      props.removeLoader();
+      enqueueSnackbar(err?.response?.data?.message || "Couldn't fetch loans", {
+        variant: "error",
+        autoHideDuration: 3000,
       });
-  };
+    }
+  }, []);
 
   return (
     <div
@@ -91,59 +71,9 @@ const NewEntryComponent = (props) => {
               dateFormat="dd/MM/yyyy"
               onChange={(date) => setDate(date)}
             />
-            <TextField
-              id="name"
-              name="name"
-              placeholder="Name"
-              variant="outlined"
-              label="Name"
-              fullWidth
-              style={{
-                marginBottom: "1em",
-              }}
-              onChange={(e) => handleChange(e.target.value)}
-            />
           </Box>
-          {borrowers.map((borrower, index) => (
-            <Box key={index}>
-              <Box
-                className="hover_black"
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  borderRadius: "15px",
-                  border: "2px solid #e0e0e0",
-                  padding: "0 15px",
-                  margin: "2px 0",
-                }}
-                onClick={() => handleClick(borrower)}
-              >
-                <Typography noWrap component="div" my={2}>
-                  {borrower.name}
-                </Typography>
-                <Typography noWrap component="div" my={2}>
-                  {borrower.contact}
-                </Typography>
-                <Typography noWrap component="div" my={2}>
-                  {borrower.occupation}
-                </Typography>
-                <Typography noWrap component="div" my={2}>
-                  {borrower?.aadhar
-                    ? borrower?.aadhar?.match(/.{1,4}/g)?.join(" ")
-                    : "-"}
-                </Typography>
-              </Box>
-            </Box>
-          ))}
         </Box>
       </center>
-      {borrower && (
-        <BorrowerDetails
-          borrower={borrower}
-          setBorrower={setBorrower}
-          date={date}
-        />
-      )}
     </div>
   );
 };

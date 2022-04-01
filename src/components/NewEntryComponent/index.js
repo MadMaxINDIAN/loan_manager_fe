@@ -18,6 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const NewEntryComponent = (props) => {
   const [loans, setLoans] = useState([]);
   const [date, setDate] = useState(new Date());
+  const [fetchAgain, setFetchAgain] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
   const config = {
@@ -41,7 +42,7 @@ const NewEntryComponent = (props) => {
         autoHideDuration: 3000,
       });
     }
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <div
@@ -74,7 +75,14 @@ const NewEntryComponent = (props) => {
             />
           </Box>
         </Box>
-        <List loans={loans} date={date} addLoader={props.addLoader} removeLoader={props.removeLoader} />
+        <List
+          loans={loans}
+          date={date}
+          addLoader={props.addLoader}
+          removeLoader={props.removeLoader}
+          fetchAgain={fetchAgain}
+          setFetchAgain={setFetchAgain}
+        />
       </center>
     </div>
   );

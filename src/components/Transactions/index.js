@@ -8,99 +8,103 @@ import { connect } from "react-redux";
 import List from "./List";
 import axios from "axios";
 import {
-    addLoader,
-    removeLoader,
+  addLoader,
+  removeLoader,
 } from "../../redux/services/actions/loaderActions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const NewEntryComponent = (props) => {
-    const [fromDate, setFromDate] = useState(new Date());
-    const [toDate, setToDate] = useState(new Date());
-    const [transactions, setTransactions] = useState([]);
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
+  const [transactions, setTransactions] = useState([]);
+  const [total, setTotal] = useState(0);
 
-    const { enqueueSnackbar } = useSnackbar();
-    const config = {
-        headers: {
-            Authorization: `Bearer ${props.auth.token}`,
+  const { enqueueSnackbar } = useSnackbar();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${props.auth.token}`,
+    },
+  };
+
+  const getTransactions = async () => {
+    props.addLoader();
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/transaction/get/dates`,
+        {
+          from_date: fromDate,
+          to_date: toDate,
         },
-    };
-
-    const getTransactions = async () => {
-      try {
-        const response = await axios.post(
-          `http://localhost:5000/transaction/get/dates`,
-          {
-            from_date: fromDate,
-            to_date: toDate,
-          },
-          config
-        );
-        setTransactions(response.data.transactions);
-        console.log(response.data.transactions);
-      } catch (e) {
-        enqueueSnackbar("Some error occured", {
-          variant: "error",
-          autoHideDuration: 3000,
-        });
-      }
+        config
+      );
+      setTransactions(response.data.transactions);
+      setTotal(response.data.total);
+      props.removeLoader();
+    } catch (e) {
+      props.removeLoader();
+      enqueueSnackbar("Some error occured", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
     }
+  };
 
-    return (
-        <div
-            style={{
-                marginTop: "4em",
-            }}
+  return (
+    <div
+      style={{
+        marginTop: "4em",
+      }}
+    >
+      <Typography variant="h6" color="GrayText" noWrap component="div" my={2}>
+        Transactions
+      </Typography>
+      <center>
+        <Box
+          sx={{ flexGrow: 1 }}
+          style={{
+            maxWidth: "700px",
+          }}
         >
-            <Typography
-                variant="h6"
-                color="GrayText"
-                noWrap
-                component="div"
-                my={2}
-            >
-                Transactions
-            </Typography>
-            <center>
-                <Box
-                    sx={{ flexGrow: 1 }}
-                    style={{
-                        maxWidth: "700px",
-                    }}
-                >
-                    <Box
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
-                    >
-                        <DatePicker
-                            selected={fromDate}
-                            dateFormat="dd/MM/yyyy"
-                            onChange={(date) => setFromDate(date)}
-                        />
+          <Box
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <DatePicker
+              selected={fromDate}
+              dateFormat="dd/MM/yyyy"
+              onChange={(date) => setFromDate(date)}
+            />
 
-                        <DatePicker
-                            selected={toDate}
-                            dateFormat="dd/MM/yyyy"
-                            onChange={(date) => setToDate(date)}
-                        />
-                        <Button variant="contained" size="small" onClick={getTransactions} >
-                          Search
-                        </Button>
-                    </Box>
-                </Box>
-                <List transactions={transactions} />
-            </center>
-        </div>
-    );
+            <DatePicker
+              selected={toDate}
+              dateFormat="dd/MM/yyyy"
+              onChange={(date) => setToDate(date)}
+            />
+            <Button variant="contained" size="small" onClick={getTransactions}>
+              Search
+            </Button>
+          </Box>
+        </Box>
+        {transactions?.length > 0 ? (
+          <List transactions={transactions} total={total} />
+        ) : (
+          <div style={{ marginTop: "30px" }}>
+            <Typography>Select dates to see transactions</Typography>
+          </div>
+        )}
+      </center>
+    </div>
+  );
 };
 
 export default connect(
-    (state) => ({
-        auth: state.auth,
-    }),
-    { addLoader, removeLoader }
+  (state) => ({
+    auth: state.auth,
+  }),
+  { addLoader, removeLoader }
 )(NewEntryComponent);

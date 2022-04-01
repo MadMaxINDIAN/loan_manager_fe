@@ -2,7 +2,7 @@ import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import PersonAddAlt1RoundedIcon from "@mui/icons-material/PersonAddAlt1Rounded";
 import ReceiptRoundedIcon from "@mui/icons-material/ReceiptRounded";
 import AssessmentRoundedIcon from "@mui/icons-material/AssessmentRounded";
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 
 const list1 = [
   {
@@ -26,10 +26,10 @@ const list1 = [
     route: "/dashboard/reports",
   },
   {
-    title: "Transactions",
+    title: "Entries",
     icon: <CurrencyRupeeIcon />,
     route: "/dashboard/transactions",
-  }
+  },
 ];
 
 export default {

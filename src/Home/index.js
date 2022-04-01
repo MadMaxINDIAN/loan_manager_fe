@@ -12,7 +12,6 @@ import {
   addLoader,
   removeLoader,
 } from "../redux/services/actions/loaderActions";
-import { users } from "../constants/users";
 import { login } from "../redux/services/actions/authActions";
 import { useSnackbar } from "notistack";
 import axios from "axios";

@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom";
 import NewAccountComponent from "./components/NewAccountComponent";
 import Home from "./Home";
 import NewEntryComponent from "./components/NewEntryComponent";
+import Transactions from "./components/Transactions";
 import LoanDetails from "./components/LoanDetailsComponent";
 
 const routes = [
@@ -31,6 +32,10 @@ const routes = [
       {
         path: "new_entry",
         element: <NewEntryComponent />,
+      },
+      {
+        path: "transactions",
+        element: <Transactions />,
       },
     ],
   },

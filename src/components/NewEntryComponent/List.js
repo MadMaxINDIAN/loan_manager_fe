@@ -17,107 +17,132 @@ Date.prototype.addDays = function (days) {
     return date;
 };
 
-const getBackgroundColor = (color, mode) =>
-    mode === "dark" ? darken(color, 0.6) : lighten(color, 0.6);
-
-const getHoverBackgroundColor = (color, mode) =>
-    mode === "dark" ? darken(color, 0.5) : lighten(color, 0.5);
-
 const today = new Date();
 today.setHours(5, 30, 0, 0);
 
-function CustomToolbar() {
+function Item(props) {
+    const [amount, setAmount] = React.useState("");
+
+    let dollarIndianLocale = Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0,
+    });
+
+    const { loan, handleSubmit } = props;
     return (
-        <GridToolbarContainer>
-            <GridToolbarExport />
-        </GridToolbarContainer>
+        <Box
+            key={loan._id}
+            style={{
+                border: "1px solid black",
+                margin: "10px 0px 10px 0px",
+                padding: "0px 15px",
+                flexDirection: "row",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+            }}
+        >
+            <Typography
+                variant="body1"
+                color="GrayText"
+                noWrap
+                component="div"
+                my={2}
+            >
+                {loan.sr_no}
+            </Typography>
+            <Typography
+                style={{
+                    width: "200px",
+                    scrollBehavior: "smooth",
+                    overflowX: "scroll",
+                }}
+                variant="body1"
+                color="Black"
+                component="div"
+                my={2}
+            >
+                {loan.borrower_id.name}
+            </Typography>
+            <Typography
+                variant="body1"
+                color="Black"
+                noWrap
+                component="div"
+                my={2}
+            >
+                {loan.opening_date.slice(0, 10).split("-").reverse().join("/")}
+            </Typography>
+            <Typography
+                variant="body1"
+                color="Black"
+                noWrap
+                component="div"
+                my={2}
+            >
+                {dollarIndianLocale.format(loan.loan_amount)}
+            </Typography>
+            <Typography
+                variant="body1"
+                color="Black"
+                noWrap
+                component="div"
+                my={2}
+            >
+                {dollarIndianLocale.format(loan.amount_to_be_paid)}
+            </Typography>
+            <Typography
+                variant="body1"
+                color="Black"
+                noWrap
+                component="div"
+                my={2}
+            >
+                {dollarIndianLocale.format(loan.daily_payment)}
+            </Typography>
+            <Typography
+                variant="body1"
+                color="Black"
+                noWrap
+                component="div"
+                my={2}
+            >
+                {loan.loan_period} days
+            </Typography>
+            <Typography
+                variant="body1"
+                color="Black"
+                noWrap
+                component="div"
+                my={2}
+            >
+                {Math.floor(
+                    (new Date(loan.opening_date)
+                        .addDays(loan.loan_period)
+                        .getTime() -
+                        today.getTime()) /
+                        (1000 * 3600 * 24)
+                ) - 1}{" "}
+                days
+            </Typography>
+            <TextField size="small" variant="outlined" onChange={(e) => {
+                setAmount(e.target.value);
+            }} value={amount} style={{ textAlign: "right" }} placeholder="Amount" />
+            <Button size="small" onClick={() => {
+                handleSubmit(loan._id, amount);
+            }} variant="contained" placeholder="Amount">
+                Add entry
+            </Button>
+        </Box>
     );
 }
 
 function LoansList(props) {
-    const [pageSize, setPageSize] = React.useState(50);
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
-    const columns = [
-        {
-            field: "_id",
-        },
-        { field: "id", headerName: "Sr. No.", width: 60, align: "center" },
-        {
-            field: "name",
-            headerName: "Name",
-            flex: 1,
-        },
-        {
-            field: "opening_date",
-            headerName: "Opening Date",
-            type: "date",
-            width: 120,
-        },
-        {
-            field: "loan_amount",
-            headerName: "Loan Amount",
-            width: 100,
-            valueFormatter: ({ value }) => value.split("₹")[1],
-            renderCell: ({ value }) => value,
-        },
-        {
-            field: "amount_to_be_paid",
-            headerName: "Amount Remaining",
-            width: 100,
-            valueFormatter: ({ value }) => value.split("₹")[1],
-            renderCell: ({ value }) => value,
-        },
-        {
-            field: "daily_payment",
-            headerName: "Daily Payment",
-            width: 80,
-            valueFormatter: ({ value }) => value.split("₹")[1],
-            renderCell: ({ value }) => value,
-        },
-        {
-            field: "days_remaining",
-            headerName: "Days Remaining",
-            width: 80,
-        },
-        {
-            field: "amount",
-            align: "center",
-            headerName: "Amount",
-            width: 150,
-            editable: true,
-        },
-        {
-            field: "button",
-            align: "center",
-            headerName: "Action",
-            width: 200,
-            renderCell: (params) => {
-                if (params.row.amount) console.log(params.row);
-                return (
-                    <strong>
-                        <Button color="success" variant="contained" size="small" >
-                            Save
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            style={{ marginLeft: 16 }}
-                            onClick={() => {
-                                handleSubmit(params.row._id, params.row.amount);
-                            }}
-                        >
-                            Add entry
-                        </Button>
-                    </strong>
-                );
-            },
-        },
-    ];
 
     const handleSubmit = async (id, amount) => {
-        console.log(id, amount);
         props.addLoader();
         const data = {
             date: props.date,
@@ -134,7 +159,6 @@ function LoansList(props) {
                 data,
                 config
             );
-            // setBorrower(res.data);
             props.removeLoader();
             enqueueSnackbar(res?.data?.message, {
                 variant: "success",
@@ -153,35 +177,6 @@ function LoansList(props) {
         }
     };
 
-    let dollarIndianLocale = Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR",
-        maximumFractionDigits: 0,
-    });
-    const rows = props.loans.map((loan, index) => ({
-        _id: loan._id,
-        id: loan.sr_no,
-        name: loan.borrower_id.name,
-        opening_date: loan.opening_date
-            .slice(0, 10)
-            .split("-")
-            .reverse()
-            .join("/"),
-        loan_amount: dollarIndianLocale.format(loan.loan_amount),
-        amount_to_be_paid: dollarIndianLocale.format(loan.amount_to_be_paid),
-        daily_payment: dollarIndianLocale.format(loan.daily_payment),
-        days_remaining:
-            loan.status === "active"
-                ? Math.floor(
-                      (new Date(loan.opening_date)
-                          .addDays(loan.loan_period)
-                          .getTime() -
-                          today.getTime()) /
-                          (1000 * 3600 * 24)
-                  )
-                : "-",
-        status: loan.status,
-    }));
     return (
         <div
             style={{
@@ -196,22 +191,9 @@ function LoansList(props) {
                     minWidth: "900px",
                 }}
             >
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    pagination
-                    disableSelectionOnClick
-                    pageSize={pageSize}
-                    rowsPerPageOptions={[10, 20, 50, 100]}
-                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                    getRowClassName={(params) =>
-                        `super-app-theme--${params.row.status.replace(" ", "")}`
-                    }
-                    columnVisibilityModel={{ _id: false }}
-                    components={{
-                        Toolbar: CustomToolbar,
-                    }}
-                />
+                {props.loans.map((loan, index) => (
+                    <Item loan={loan} key={index} handleSubmit={handleSubmit} />
+                ))}
             </Box>
         </div>
     );

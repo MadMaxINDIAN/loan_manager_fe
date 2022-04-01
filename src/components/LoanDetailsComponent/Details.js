@@ -62,7 +62,7 @@ const Details = ({ loan }) => {
           <tr>
             {loan.payments.map((payment, index) => (
               <>
-                {new Date(loan.opening_date).addDays(index) <= new Date() && (
+                {new Date(loan.opening_date.slice(0,10)).addDays(index) <= new Date() && (
                   <th
                     style={{
                       border: "1px solid black",
@@ -87,7 +87,7 @@ const Details = ({ loan }) => {
           <tr>
             {loan.payments.map((payment, index) => (
               <>
-                {new Date(loan.opening_date).addDays(index) <= new Date() && (
+                {new Date(loan.opening_date.slice(0,10)).addDays(index) <= new Date() && (
                   <td
                     style={{
                       border: "1px solid black",

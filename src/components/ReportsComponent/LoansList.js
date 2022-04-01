@@ -102,7 +102,7 @@ export default function LoansList(props) {
             (new Date(loan.opening_date).addDays(loan.loan_period).getTime() -
               today.getTime()) /
               (1000 * 3600 * 24)
-          )
+          ) - 1
         : "-",
     status: loan.status,
   }));

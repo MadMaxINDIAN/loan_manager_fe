@@ -119,7 +119,7 @@ export default function LoansList(props) {
       </Typography>
       <Box
         sx={{
-          height: 400,
+          height: 1500,
           minWidth: "900px",
           "& .super-app-theme--baddebt": {
             bgcolor: (theme) =>

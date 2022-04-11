@@ -166,7 +166,7 @@ const DashboardComponent = (props) => {
           padding: "2em",
         }}
       >
-        <Grid item xs={12} md={6} lg={3}>
+        <Grid item xs={12} md={6} lg={4}>
           <Box>
             <Typography variant="h6">Investment Amount</Typography>
             <Typography variant="p">
@@ -174,15 +174,7 @@ const DashboardComponent = (props) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <Box>
-            <Typography variant="h6">Received Amount</Typography>
-            <Typography variant="p">
-              {dollarIndianLocale.format(summary?.amount_taken)}
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid item xs={12} md={6} lg={3}>
+        <Grid item xs={12} md={6} lg={4}>
           <Box>
             <Typography variant="h6">Amount Receivable</Typography>
             <Typography variant="body1">as of today</Typography>
@@ -191,7 +183,7 @@ const DashboardComponent = (props) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} md={6} lg={3}>
+        <Grid item xs={12} md={6} lg={4}>
           <Box>
             <Typography variant="h6">Amount Receivable</Typography>
             <Typography variant="body1">today</Typography>

@@ -50,6 +50,8 @@ const columns = [
     headerName: "Amount",
     width: 150,
     align: "right",
+    valueFormatter: ({ value }) => value.split("₹")[1],
+    renderCell: ({ value }) => value,
   },
 ];
 

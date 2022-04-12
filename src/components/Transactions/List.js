@@ -89,6 +89,7 @@ export default function LoansList(props) {
           columns={columns}
           pagination
           disableSelectionOnClick
+          disableColumnFilter
           pageSize={pageSize}
           rowsPerPageOptions={[10, 20, 50, 100]}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

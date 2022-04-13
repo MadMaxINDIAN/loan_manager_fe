@@ -223,9 +223,9 @@ const DashboardComponent = (props) => {
         </Grid>
         <Grid item lg={2.5}>
           <Box>
-            <Typography variant="h6">Investment Amount</Typography>
+            <Typography variant="h6">Total Loan Amount</Typography>
             <Typography variant="p">
-              {dollarIndianLocale.format(totalInvested - totalReceived / 1.2)}
+              {dollarIndianLocale.format(totalInvested)}
             </Typography>
           </Box>
         </Grid>

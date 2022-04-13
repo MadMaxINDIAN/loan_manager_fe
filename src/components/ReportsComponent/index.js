@@ -34,7 +34,7 @@ const DashboardComponent = (props) => {
     try {
       props.addLoader();
       const res = await axios.post(
-        `https://madhuresh-loan-management.herokuapp.com/loan/get/dates`,
+        `http://localhost:5000/loan/get/dates`,
         {
           from_date: fromDate,
           to_date: toDate,
@@ -55,7 +55,7 @@ const DashboardComponent = (props) => {
   useEffect(async () => {
     props.addLoader();
     try {
-      const result = await axios.get("https://madhuresh-loan-management.herokuapp.com/loan/get", config);
+      const result = await axios.get("http://localhost:5000/loan/get", config);
       setLoans(result.data.loans);
       props.removeLoader();
     } catch (err) {

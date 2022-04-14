@@ -3,6 +3,10 @@ import {
   DataGrid,
   GridToolbarContainer,
   GridToolbarExport,
+  useGridApiContext,
+  useGridSelector,
+  gridPageSelector,
+  gridPageCountSelector,
 } from "@mui/x-data-grid";
 import { Typography, Box } from "@mui/material";
 import { darken, lighten } from "@mui/material/styles";
@@ -21,7 +25,7 @@ today.setHours(5, 30, 0, 0);
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
-      <GridToolbarExport />
+      <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
     </GridToolbarContainer>
   );
 }
@@ -54,6 +58,21 @@ const columns = [
     renderCell: ({ value }) => value,
   },
 ];
+
+function CustomPagination() {
+  const apiRef = useGridApiContext();
+  const page = useGridSelector(apiRef, gridPageSelector);
+  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+
+  return (
+    <Pagination
+      color="primary"
+      count={pageCount}
+      page={page + 1}
+      onChange={(event, value) => apiRef.current.setPage(value - 1)}
+    />
+  );
+}
 
 export default function LoansList(props) {
   const total = props.total;
@@ -99,6 +118,7 @@ export default function LoansList(props) {
           components={{
             Toolbar: CustomToolbar,
             Footer: CustomFooterTotalComponent,
+            Pagination: CustomPagination,
           }}
           componentsProps={{
             footer: { total },

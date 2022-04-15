@@ -11,7 +11,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isAuthenticated: true,
-        token: action.payload,
+        token: action.payload.token,
+        user: action.payload.user,
       };
     default:
       return state;

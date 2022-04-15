@@ -51,14 +51,14 @@ function Home(props) {
     const data = new FormData(event.currentTarget);
     try {
       const response = await axios.post(
-        "https://kalawati-finance-company.herokuapp.com/auth/login",
+        "http://localhost:5000/auth/login",
         {
           username: data.get("username"),
           password: data.get("password"),
         },
         config
       );
-      props.login(response.data.token);
+      props.login(response.data);
       props.removeLoader();
       navigate("/dashboard");
     } catch (err) {

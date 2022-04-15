@@ -7,6 +7,7 @@ import Home from "./Home";
 import NewEntryComponent from "./components/NewEntryComponent";
 import Transactions from "./components/Transactions";
 import LoanDetails from "./components/LoanDetailsComponent";
+import EditDetails from "./components/EditDetailsComponent";
 
 const routes = [
   {
@@ -36,6 +37,10 @@ const routes = [
       {
         path: "transactions",
         element: <Transactions />,
+      },
+      {
+        path: "edit_details",
+        element: <EditDetails />,
       },
     ],
   },

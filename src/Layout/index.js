@@ -60,17 +60,29 @@ function Layout(props) {
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
           <List>
-            {sidebar.first.map((item, index) => (
-              <ListItem
-                button
-                onClick={() => navigate(item.route)}
-                key={item.title}
-                selected={pathname === item.route}
-              >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItem>
-            ))}
+            {props?.auth?.user?.type === "user"
+              ? sidebar.first.map((item, index) => (
+                  <ListItem
+                    button
+                    onClick={() => navigate(item.route)}
+                    key={item.title}
+                    selected={pathname === item.route}
+                  >
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.title} />
+                  </ListItem>
+                ))
+              : sidebar.second.map((item, index) => (
+                  <ListItem
+                    button
+                    onClick={() => navigate(item.route)}
+                    key={item.title}
+                    selected={pathname === item.route}
+                  >
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.title} />
+                  </ListItem>
+                ))}
           </List>
           <Divider />
         </Box>

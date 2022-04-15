@@ -36,7 +36,7 @@ const NewEntryComponent = (props) => {
     props.addLoader();
     try {
       const response = await axios.post(
-        `https://kalawati-finance-company.herokuapp.com/transaction/get/dates`,
+        `http://localhost:5000/transaction/get/dates`,
         {
           from_date: fromDate,
           to_date: toDate,
@@ -98,7 +98,17 @@ const NewEntryComponent = (props) => {
         {transactions?.length > 0 ? (
           <>
             <List transactions={transactions} total={total} />
-            <Typography style={{fontSize: "25px", textAlign: "right", padding: "15px", backgroundColor: "#ddd", color: "#222"}}>Total: {dollarIndianLocale.format(total)}</Typography>
+            <Typography
+              style={{
+                fontSize: "25px",
+                textAlign: "right",
+                padding: "15px",
+                backgroundColor: "#ddd",
+                color: "#222",
+              }}
+            >
+              Total: {dollarIndianLocale.format(total)}
+            </Typography>
           </>
         ) : (
           <div style={{ marginTop: "30px" }}>

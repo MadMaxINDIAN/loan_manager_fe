@@ -1,8 +1,8 @@
 import { LOGIN } from "./type";
 
-export const login = (token) => (dispatch) => {
+export const login = (data) => (dispatch) => {
   dispatch({
     type: LOGIN,
-    payload: token,
+    payload: { token: data.token, user: data.user },
   });
 };

@@ -51,7 +51,7 @@ function Home(props) {
     const data = new FormData(event.currentTarget);
     try {
       const response = await axios.post(
-        "https://madhuresh-loan-management.herokuapp.com/auth/login",
+        "https://kalawati-finance-company.herokuapp.com/auth/login",
         {
           username: data.get("username"),
           password: data.get("password"),
@@ -94,7 +94,7 @@ function Home(props) {
             }}
           />
           <Typography component="h1" variant="h5">
-            Loan Management System
+            Kalawati Finance Company
           </Typography>
           <Box
             component="form"

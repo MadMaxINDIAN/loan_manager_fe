@@ -21,7 +21,7 @@ const LoanDetails = (props) => {
     props.addLoader();
     try {
       const res = await axios.get(
-        `https://madhuresh-loan-management.herokuapp.com/loan/get/${id}`,
+        `https://kalawati-finance-company.herokuapp.com/loan/get/${id}`,
         config
       );
       setLoan(res.data.loan);

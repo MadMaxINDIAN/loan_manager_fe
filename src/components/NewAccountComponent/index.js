@@ -34,12 +34,12 @@ const NewAccountComponent = (props) => {
   const handleSubmit = () => {
     props.addLoader();
     axios
-      .post("https://madhuresh-loan-management.herokuapp.com/borrower/add", input, config)
+      .post("https://kalawati-finance-company.herokuapp.com/borrower/add", input, config)
       .then((res) => {
         const borrower_id = res?.data?.borrower?._id;
         input.borrower_id = borrower_id;
         return axios
-          .post("https://madhuresh-loan-management.herokuapp.com/loan/add", input, config)
+          .post("https://kalawati-finance-company.herokuapp.com/loan/add", input, config)
           .then(() => {
             props.removeLoader();
             enqueueSnackbar("Account Created Successfully", {

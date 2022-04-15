@@ -123,7 +123,7 @@ function LoansList(props) {
     };
     try {
       const res = await axios.post(
-        `https://madhuresh-loan-management.herokuapp.com/transaction/${id}/add`,
+        `https://kalawati-finance-company.herokuapp.com/transaction/${id}/add`,
         data,
         config
       );

@@ -59,21 +59,6 @@ const columns = [
   },
 ];
 
-function CustomPagination() {
-  const apiRef = useGridApiContext();
-  const page = useGridSelector(apiRef, gridPageSelector);
-  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
-
-  return (
-    <Pagination
-      color="primary"
-      count={pageCount}
-      page={page + 1}
-      onChange={(event, value) => apiRef.current.setPage(value - 1)}
-    />
-  );
-}
-
 export default function LoansList(props) {
   const total = props.total;
   const [pageSize, setPageSize] = React.useState(100);
@@ -117,11 +102,6 @@ export default function LoansList(props) {
           columnVisibilityModel={{ _id: false }}
           components={{
             Toolbar: CustomToolbar,
-            Footer: CustomFooterTotalComponent,
-            Pagination: CustomPagination,
-          }}
-          componentsProps={{
-            footer: { total },
           }}
         />
       </Box>

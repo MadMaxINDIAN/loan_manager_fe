@@ -98,7 +98,7 @@ const NewEntryComponent = (props) => {
         {transactions?.length > 0 ? (
           <>
             <List transactions={transactions} total={total} />
-            <Typography>Total: {dollarIndianLocale.format(total)}</Typography>
+            <Typography style={{fontSize: "25px", textAlign: "right", padding: "15px", backgroundColor: "#ddd", color: "#222"}}>Total: {dollarIndianLocale.format(total)}</Typography>
           </>
         ) : (
           <div style={{ marginTop: "30px" }}>

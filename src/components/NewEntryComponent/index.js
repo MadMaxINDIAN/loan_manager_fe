@@ -26,11 +26,12 @@ const NewEntryComponent = (props) => {
       Authorization: `Bearer ${props.auth.token}`,
     },
   };
+  console.log(props.auth);
   React.useEffect(async () => {
     props.addLoader();
     try {
       const res = await axios.get(
-        "http://localhost:5000/loan/get/active",
+        "https://madhuresh-loan-management.herokuapp.com/loan/get/active",
         config
       );
       setLoans(res.data.loans);

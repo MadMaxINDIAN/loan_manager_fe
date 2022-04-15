@@ -109,7 +109,7 @@ export default function LoansList(props) {
   return (
     <div
       style={{
-        height: "400px",
+        height: "800px",
         width: "100%",
         marginTop: "20px",
       }}
@@ -119,7 +119,7 @@ export default function LoansList(props) {
       </Typography>
       <Box
         sx={{
-          height: 400,
+          height: 800,
           minWidth: "900px",
           "& .super-app-theme--baddebt": {
             bgcolor: (theme) =>

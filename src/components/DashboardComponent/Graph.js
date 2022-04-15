@@ -14,7 +14,7 @@ const Graph = (props) => {
     tmp.push(props.seven[1].data[i][1]);
     arr.push(tmp);
   }
-  const data = [["Day", "Investment", "Received"], ...arr];
+  const data = [["Day", "New Loan amount", "Received"], ...arr];
   const options = {
     chart: {
       title: "Seven Days Summary",

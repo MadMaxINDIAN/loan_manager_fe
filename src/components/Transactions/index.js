@@ -19,6 +19,11 @@ const NewEntryComponent = (props) => {
   const [toDate, setToDate] = useState(new Date());
   const [transactions, setTransactions] = useState([]);
   const [total, setTotal] = useState(0);
+  let dollarIndianLocale = Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  });
 
   const { enqueueSnackbar } = useSnackbar();
   const config = {
@@ -91,7 +96,10 @@ const NewEntryComponent = (props) => {
           </Box>
         </Box>
         {transactions?.length > 0 ? (
-          <List transactions={transactions} total={total} />
+          <>
+            <List transactions={transactions} total={total} />
+            <Typography>Total: {dollarIndianLocale.format(total)}</Typography>
+          </>
         ) : (
           <div style={{ marginTop: "30px" }}>
             <Typography>Select dates to see transactions</Typography>

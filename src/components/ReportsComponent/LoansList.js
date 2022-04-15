@@ -26,7 +26,7 @@ today.setHours(5, 30, 0, 0);
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
-      <GridToolbarExport />
+      <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
     </GridToolbarContainer>
   );
 }

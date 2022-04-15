@@ -3,6 +3,10 @@ import {
   DataGrid,
   GridToolbarContainer,
   GridToolbarExport,
+  useGridApiContext,
+  useGridSelector,
+  gridPageSelector,
+  gridPageCountSelector,
 } from "@mui/x-data-grid";
 import { Typography, Box } from "@mui/material";
 import { darken, lighten } from "@mui/material/styles";
@@ -21,7 +25,7 @@ today.setHours(5, 30, 0, 0);
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
-      <GridToolbarExport />
+      <GridToolbarExport printOptions={{ disableToolbarButton: true }} />
     </GridToolbarContainer>
   );
 }
@@ -98,10 +102,6 @@ export default function LoansList(props) {
           columnVisibilityModel={{ _id: false }}
           components={{
             Toolbar: CustomToolbar,
-            Footer: CustomFooterTotalComponent,
-          }}
-          componentsProps={{
-            footer: { total },
           }}
         />
       </Box>

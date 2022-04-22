@@ -220,7 +220,7 @@ const EditDetails = (props) => {
             <TextField
               id="loan_period"
               name="loan_period"
-              value={loan.loan_period}
+              value={input.loan_period}
               placeholder="Loan Period"
               variant="outlined"
               label="Loan Period"

@@ -35,7 +35,7 @@ const NewAccountComponent = (props) => {
     props.addLoader();
     axios
       .post(
-        "https://kalawati-finance-company.herokuapp.com/borrower/add",
+        "http://localhost:5000/borrower/add",
         input,
         config
       )
@@ -44,7 +44,7 @@ const NewAccountComponent = (props) => {
         input.borrower_id = borrower_id;
         return axios
           .post(
-            "https://kalawati-finance-company.herokuapp.com/loan/add",
+            "http://localhost:5000/loan/add",
             input,
             config
           )

@@ -26,7 +26,6 @@ const NewEntryComponent = (props) => {
       Authorization: `Bearer ${props.auth.token}`,
     },
   };
-  console.log(props.auth);
   React.useEffect(async () => {
     props.addLoader();
     try {

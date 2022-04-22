@@ -35,7 +35,7 @@ const EditDetails = (props) => {
     props.addLoader();
     try {
       const res = await axios.get(
-        `http://localhost:5000/loan/get/sr_no/${srNo}`,
+        `https://kfc-test.herokuapp.com/loan/get/sr_no/${srNo}`,
         config
       );
       setLoan(res.data.loan);
@@ -69,12 +69,12 @@ const EditDetails = (props) => {
     props.addLoader();
     try {
       const res = await axios.post(
-        `http://localhost:5000/borrower/update/`,
+        `https://kfc-test.herokuapp.com/borrower/update/`,
         input,
         config
       );
       const res1 = await axios.post(
-        `http://localhost:5000/loan/update/`,
+        `https://kfc-test.herokuapp.com/loan/update/`,
         input,
         config
       );

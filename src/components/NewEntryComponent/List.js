@@ -128,7 +128,6 @@ function LoansList(props) {
         data,
         config
       );
-      props.setFetchAgain(!props.fetchAgain);
       props.removeLoader();
       enqueueSnackbar(res?.data?.message, {
         variant: "success",

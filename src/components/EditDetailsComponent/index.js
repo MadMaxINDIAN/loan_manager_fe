@@ -65,6 +65,32 @@ const EditDetails = (props) => {
     }
   };
 
+  const handleDelete = async () => {
+    props.addLoader();
+    try {
+      await axios.delete(
+        `http://localhost:5000/loan/delete/${loan?.sr_no}`,
+        config
+      );
+      enqueueSnackbar("Loan deleted successfully", {
+        variant: "success",
+        autoHideDuration: 3000,
+      });
+      setLoan(null);
+      setSrNo();
+      props.removeLoader();
+    } catch (err) {
+      props.removeLoader();
+      enqueueSnackbar(
+        err?.response?.data?.message || "Couldn't delete loan",
+        {
+          variant: "error",
+          autoHideDuration: 3000,
+        }
+      );
+    }
+  }
+
   const handleUpdate = async () => {
     props.addLoader();
     try {
@@ -109,6 +135,7 @@ const EditDetails = (props) => {
             placeholder="Sr. No."
             variant="outlined"
             label="Sr. No."
+            value={srNo}
             onChange={(e) => setSrNo(e.target.value)}
           />
         </Grid>
@@ -233,6 +260,11 @@ const EditDetails = (props) => {
           <Grid item xs={12}>
             <Button onClick={handleUpdate} variant="contained" fullWidth>
               Update
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <Button onClick={handleDelete} variant="contained" fullWidth color="error">
+              Delete
             </Button>
           </Grid>
         </Grid>

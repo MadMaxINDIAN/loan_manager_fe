@@ -224,7 +224,6 @@ const EditDetails = (props) => {
               placeholder="Loan Period"
               variant="outlined"
               label="Loan Period"
-              disabled
               fullWidth
               onChange={(e) =>
                 setInput({ ...input, [e.target.name]: e.target.value })

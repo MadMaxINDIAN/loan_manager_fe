@@ -47,6 +47,7 @@ function Item(props) {
         {loan.sr_no}
       </Typography>
       <Typography
+      class="loan_account_holder"
         style={{
           width: "200px",
           scrollBehavior: "smooth",

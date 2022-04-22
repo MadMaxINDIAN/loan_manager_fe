@@ -34,12 +34,12 @@ const NewAccountComponent = (props) => {
   const handleSubmit = () => {
     props.addLoader();
     axios
-      .post("https://kfc-test.herokuapp.com/borrower/add", input, config)
+      .post("http://localhost:5000/borrower/add", input, config)
       .then((res) => {
         const borrower_id = res?.data?.borrower?._id;
         input.borrower_id = borrower_id;
         return axios
-          .post("https://kfc-test.herokuapp.com/loan/add", input, config)
+          .post("http://localhost:5000/loan/add", input, config)
           .then(() => {
             props.removeLoader();
             enqueueSnackbar("Account Created Successfully", {

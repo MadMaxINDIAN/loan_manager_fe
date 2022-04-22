@@ -35,7 +35,7 @@ const EditDetails = (props) => {
     props.addLoader();
     try {
       const res = await axios.get(
-        `https://kfc-test.herokuapp.com/loan/get/sr_no/${srNo}`,
+        `http://localhost:5000/loan/get/sr_no/${srNo}`,
         config
       );
       setLoan(res.data.loan);
@@ -69,12 +69,12 @@ const EditDetails = (props) => {
     props.addLoader();
     try {
       const res = await axios.post(
-        `https://kfc-test.herokuapp.com/borrower/update/`,
+        `http://localhost:5000/borrower/update/`,
         input,
         config
       );
       const res1 = await axios.post(
-        `https://kfc-test.herokuapp.com/loan/update/`,
+        `http://localhost:5000/loan/update/`,
         input,
         config
       );
@@ -220,11 +220,10 @@ const EditDetails = (props) => {
             <TextField
               id="loan_period"
               name="loan_period"
-              value={loan.loan_period}
+              value={input.loan_period}
               placeholder="Loan Period"
               variant="outlined"
               label="Loan Period"
-              disabled
               fullWidth
               onChange={(e) =>
                 setInput({ ...input, [e.target.name]: e.target.value })

@@ -51,7 +51,7 @@ function Home(props) {
     const data = new FormData(event.currentTarget);
     try {
       const response = await axios.post(
-        "https://kfc-test.herokuapp.com/auth/login",
+        "http://localhost:5000/auth/login",
         {
           username: data.get("username"),
           password: data.get("password"),

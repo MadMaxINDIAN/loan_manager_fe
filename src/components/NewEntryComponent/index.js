@@ -30,7 +30,7 @@ const NewEntryComponent = (props) => {
     props.addLoader();
     try {
       const res = await axios.get(
-        "https://kfc-test.herokuapp.com/loan/get/active",
+        "http://localhost:5000/loan/get/active",
         config
       );
       setLoans(res.data.loans);

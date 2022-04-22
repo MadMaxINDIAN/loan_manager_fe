@@ -123,7 +123,7 @@ function LoansList(props) {
     };
     try {
       const res = await axios.post(
-        `https://kfc-test.herokuapp.com/transaction/${id}/add`,
+        `http://localhost:5000/transaction/${id}/add`,
         data,
         config
       );

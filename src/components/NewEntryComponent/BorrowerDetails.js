@@ -29,10 +29,7 @@ const BorrowerDetails = (props) => {
   const handleBadDebt = async (loan_id) => {
     props.addLoader();
     await axios
-      .post(
-        `https://kfc-test.herokuapp.com/transaction/badDebt/${loan_id}`,
-        config
-      )
+      .post(`http://localhost:5000/transaction/badDebt/${loan_id}`, config)
       .then((res) => {
         props.removeLoader();
         setBorrower(res.data);
@@ -59,7 +56,7 @@ const BorrowerDetails = (props) => {
     };
     try {
       const res = await axios.post(
-        `https://kfc-test.herokuapp.com/transaction/${id}/add`,
+        `http://localhost:5000/transaction/${id}/add`,
         data,
         config
       );

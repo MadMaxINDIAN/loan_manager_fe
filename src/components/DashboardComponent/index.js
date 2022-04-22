@@ -45,15 +45,12 @@ const DashboardComponent = (props) => {
   useEffect(async () => {
     props.addLoader();
     try {
-      const res = await axios.get(
-        "https://kfc-test.herokuapp.com/summary/",
-        config
-      );
+      const res = await axios.get("http://localhost:5000/summary/", config);
       setAmountToBePaid(res.data.amount_to_be_paid || 0);
       setAmountReceivable(res.data.amount_receivable || 0);
       setSummary(res.data.summary);
       const res1 = await axios.get(
-        "https://kfc-test.herokuapp.com/summary/seven",
+        "http://localhost:5000/summary/seven",
         config
       );
       const sevendata = [];
@@ -101,7 +98,7 @@ const DashboardComponent = (props) => {
         },
       ]);
       const res2 = await axios.post(
-        `https://kfc-test.herokuapp.com/summary/daily`,
+        `http://localhost:5000/summary/daily`,
         {
           from_date: new Date().toISOString(),
           to_date: new Date().toISOString(),
@@ -135,7 +132,7 @@ const DashboardComponent = (props) => {
     }
     try {
       const response = await axios.post(
-        `https://kfc-test.herokuapp.com/summary/daily`,
+        `http://localhost:5000/summary/daily`,
         {
           from_date: fromDate,
           to_date: toDate,

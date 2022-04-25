@@ -48,7 +48,7 @@ const NewEntryComponent = (props) => {
       props.removeLoader();
     } catch (e) {
       props.removeLoader();
-      enqueueSnackbar("Some error occured", {
+      enqueueSnackbar(e?.response?.data?.message || "Some error occured", {
         variant: "error",
         autoHideDuration: 3000,
       });

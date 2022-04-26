@@ -35,7 +35,7 @@ const EditDetails = (props) => {
     props.addLoader();
     try {
       const res = await axios.get(
-        `http://localhost:5000/loan/get/sr_no/${srNo}`,
+        `https://kalawati-finance-company.herokuapp.com/loan/get/sr_no/${srNo}`,
         config
       );
       setLoan(res.data.loan);
@@ -69,7 +69,7 @@ const EditDetails = (props) => {
     props.addLoader();
     try {
       await axios.delete(
-        `http://localhost:5000/loan/delete/${loan?.sr_no}`,
+        `https://kalawati-finance-company.herokuapp.com/loan/delete/${loan?.sr_no}`,
         config
       );
       enqueueSnackbar("Loan deleted successfully", {
@@ -95,12 +95,12 @@ const EditDetails = (props) => {
     props.addLoader();
     try {
       const res = await axios.post(
-        `http://localhost:5000/borrower/update/`,
+        `https://kalawati-finance-company.herokuapp.com/borrower/update/`,
         input,
         config
       );
       const res1 = await axios.post(
-        `http://localhost:5000/loan/update/`,
+        `https://kalawati-finance-company.herokuapp.com/loan/update/`,
         input,
         config
       );

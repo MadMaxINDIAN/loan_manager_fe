@@ -36,7 +36,7 @@ const NewEntryComponent = (props) => {
     props.addLoader();
     try {
       const response = await axios.post(
-        `http://localhost:5000/transaction/get/dates`,
+        `https://kalawati-finance-company.herokuapp.com/transaction/get/dates`,
         {
           from_date: fromDate,
           to_date: toDate,

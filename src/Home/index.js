@@ -51,7 +51,7 @@ function Home(props) {
     const data = new FormData(event.currentTarget);
     try {
       const response = await axios.post(
-        "http://localhost:5000/auth/login",
+        "https://kalawati-finance-company.herokuapp.com/auth/login",
         {
           username: data.get("username"),
           password: data.get("password"),

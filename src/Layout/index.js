@@ -42,7 +42,7 @@ function Layout(props) {
             }}
           />
           <Typography variant="h6" noWrap component="div">
-            Loan Management Software
+            Kalawati Finance Company
           </Typography>
         </Toolbar>
       </AppBar>

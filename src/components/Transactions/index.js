@@ -47,6 +47,7 @@ const NewEntryComponent = (props) => {
       setTotal(response.data.total);
       props.removeLoader();
     } catch (e) {
+      setTransactions([]);
       props.removeLoader();
       enqueueSnackbar(e?.response?.data?.message || "Some error occured", {
         variant: "error",

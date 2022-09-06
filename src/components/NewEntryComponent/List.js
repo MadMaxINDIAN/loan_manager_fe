@@ -23,10 +23,11 @@ function Item(props) {
     maximumFractionDigits: 0,
   });
 
-  const { loan, handleSubmit } = props;
+  const { handleSubmit, borrower } = props;
+  const loan = borrower.loans[0]
   return (
     <Box
-      key={loan._id}
+      key={loan?._id}
       style={{
         border: "1px solid black",
         margin: "10px 0px 10px 0px",
@@ -44,7 +45,7 @@ function Item(props) {
         component="div"
         my={2}
       >
-        {loan.sr_no}
+        {loan?.sr_no}
       </Typography>
       <Typography
         class="loan_account_holder"
@@ -58,26 +59,26 @@ function Item(props) {
         component="div"
         my={2}
       >
-        {loan.borrower_id.name}
+        {borrower?.name}
       </Typography>
       <Typography variant="body1" color="Black" noWrap component="div" my={2}>
-        {loan.opening_date.slice(0, 10).split("-").reverse().join("/")}
+        {loan?.opening_date?.slice(0, 10)?.split("-")?.reverse().join("/")}
       </Typography>
       <Typography variant="body1" color="Black" noWrap component="div" my={2}>
-        {dollarIndianLocale.format(loan.loan_amount)}
+        {dollarIndianLocale.format(loan?.loan_amount)}
       </Typography>
       <Typography variant="body1" color="Black" noWrap component="div" my={2}>
-        {dollarIndianLocale.format(loan.amount_to_be_paid)}
+        {dollarIndianLocale.format(loan?.amount_to_be_paid)}
       </Typography>
       <Typography variant="body1" color="Black" noWrap component="div" my={2}>
-        {dollarIndianLocale.format(loan.daily_payment)}
+        {dollarIndianLocale.format(loan?.daily_payment)}
       </Typography>
       <Typography variant="body1" color="Black" noWrap component="div" my={2}>
-        {loan.loan_period} days
+        {loan?.loan_period} days
       </Typography>
       <Typography variant="body1" color="Black" noWrap component="div" my={2}>
         {Math.floor(
-          (new Date(loan.opening_date).addDays(loan.loan_period).getTime() -
+          (new Date(loan?.opening_date).addDays(loan?.loan_period).getTime() -
             today.getTime()) /
           (1000 * 3600 * 24)
         ) - 1}{" "}
@@ -148,7 +149,7 @@ function LoansList(props) {
 
   return (
     <>
-      {props?.loans?.length > 0 &&
+      {props?.borrowers?.length > 0 &&
         <div
           style={{
             height: "400px",
@@ -163,9 +164,9 @@ function LoansList(props) {
               minWidth: "900px",
             }}
           >
-            {props.loans.map((loan, index) => (
+            {props?.borrowers?.map((borrower, index) => (
               <Item
-                loan={loan}
+                borrower={borrower}
                 key={index}
                 handleSubmit={handleSubmit}
                 fetchAgain={props.fetchAgain}

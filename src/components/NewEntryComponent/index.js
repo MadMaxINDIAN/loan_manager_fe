@@ -16,7 +16,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const NewEntryComponent = (props) => {
-  const [loans, setLoans] = useState([]);
+  const [borrowers, setBorrowers] = useState([]);
   const [date, setDate] = useState(new Date());
   const [fetchAgain, setFetchAgain] = useState(false);
   const [name, setName] = useState()
@@ -31,7 +31,7 @@ const NewEntryComponent = (props) => {
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       onChangeHandler()
-    }, 500)
+    }, 300)
 
     return () => clearTimeout(delayDebounceFn)
   }, [name])
@@ -39,7 +39,7 @@ const NewEntryComponent = (props) => {
   const onChangeHandler = async () => {
     try {
       const res = await axios.get(`http://localhost:5000/borrower/get?search=${name}`, config)
-      setLoans(res.data.loans)
+      setBorrowers(res.data.borrowers)
     } catch (err) {
       enqueueSnackbar(err?.response?.data?.message || 'Something went wrong', {
         variant: 'error',
@@ -47,24 +47,6 @@ const NewEntryComponent = (props) => {
       })
     }
   }
-
-  // React.useEffect(async () => {
-  //   props.addLoader();
-  //   try {
-  //     const res = await axios.get(
-  //       "https://kalawati-finance-company.herokuapp.com/loan/get/active",
-  //       config
-  //     );
-  //     setLoans(res.data.loans);
-  //     props.removeLoader();
-  //   } catch (err) {
-  //     props.removeLoader();
-  //     enqueueSnackbar(err?.response?.data?.message || "Couldn't fetch loans", {
-  //       variant: "error",
-  //       autoHideDuration: 3000,
-  //     });
-  //   }
-  // }, [fetchAgain]);
 
   return (
     <div
@@ -108,7 +90,7 @@ const NewEntryComponent = (props) => {
           />
         </Box>
         <List
-          loans={loans}
+          borrowers={borrowers}
           date={date}
           addLoader={props.addLoader}
           removeLoader={props.removeLoader}

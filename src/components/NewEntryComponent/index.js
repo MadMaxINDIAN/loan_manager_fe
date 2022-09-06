@@ -31,7 +31,7 @@ const NewEntryComponent = (props) => {
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       onChangeHandler()
-    }, 300)
+    }, 500)
 
     return () => clearTimeout(delayDebounceFn)
   }, [name])

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { TextField } from "@mui/material";
@@ -19,6 +19,7 @@ const NewEntryComponent = (props) => {
   const [loans, setLoans] = useState([]);
   const [date, setDate] = useState(new Date());
   const [fetchAgain, setFetchAgain] = useState(false);
+  const [name, setName] = useState()
 
   const { enqueueSnackbar } = useSnackbar();
   const config = {
@@ -26,23 +27,44 @@ const NewEntryComponent = (props) => {
       Authorization: `Bearer ${props.auth.token}`,
     },
   };
-  React.useEffect(async () => {
-    props.addLoader();
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      onChangeHandler()
+    }, 500)
+
+    return () => clearTimeout(delayDebounceFn)
+  }, [name])
+
+  const onChangeHandler = async () => {
     try {
-      const res = await axios.get(
-        "https://kalawati-finance-company.herokuapp.com/loan/get/active",
-        config
-      );
-      setLoans(res.data.loans);
-      props.removeLoader();
+      const res = await axios.get(`http://localhost:5000/borrower/get?search=${name}`, config)
+      setLoans(res.data.loans)
     } catch (err) {
-      props.removeLoader();
-      enqueueSnackbar(err?.response?.data?.message || "Couldn't fetch loans", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
+      enqueueSnackbar(err?.response?.data?.message || 'Something went wrong', {
+        variant: 'error',
+        autoHideDuration: 3000
+      })
     }
-  }, [fetchAgain]);
+  }
+
+  // React.useEffect(async () => {
+  //   props.addLoader();
+  //   try {
+  //     const res = await axios.get(
+  //       "https://kalawati-finance-company.herokuapp.com/loan/get/active",
+  //       config
+  //     );
+  //     setLoans(res.data.loans);
+  //     props.removeLoader();
+  //   } catch (err) {
+  //     props.removeLoader();
+  //     enqueueSnackbar(err?.response?.data?.message || "Couldn't fetch loans", {
+  //       variant: "error",
+  //       autoHideDuration: 3000,
+  //     });
+  //   }
+  // }, [fetchAgain]);
 
   return (
     <div
@@ -66,6 +88,7 @@ const NewEntryComponent = (props) => {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
+              margin: '20px 0px'
             }}
           >
             <DatePicker
@@ -74,6 +97,15 @@ const NewEntryComponent = (props) => {
               onChange={(date) => setDate(date)}
             />
           </Box>
+          <TextField
+            fullWidth
+            label='name'
+            placeholder="Name"
+            name="name"
+            error={false}
+            helperText={false}
+            onChange={(e) => setName(e.target.value)}
+          />
         </Box>
         <List
           loans={loans}

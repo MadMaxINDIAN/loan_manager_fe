@@ -47,7 +47,7 @@ function Item(props) {
         {loan.sr_no}
       </Typography>
       <Typography
-      class="loan_account_holder"
+        class="loan_account_holder"
         style={{
           width: "200px",
           scrollBehavior: "smooth",
@@ -79,7 +79,7 @@ function Item(props) {
         {Math.floor(
           (new Date(loan.opening_date).addDays(loan.loan_period).getTime() -
             today.getTime()) /
-            (1000 * 3600 * 24)
+          (1000 * 3600 * 24)
         ) - 1}{" "}
         days
       </Typography>
@@ -147,30 +147,35 @@ function LoansList(props) {
   };
 
   return (
-    <div
-      style={{
-        height: "400px",
-        width: "100%",
-        marginTop: "20px",
-      }}
-    >
-      <Box
-        sx={{
-          height: 400,
-          minWidth: "900px",
-        }}
-      >
-        {props.loans.map((loan, index) => (
-          <Item
-            loan={loan}
-            key={index}
-            handleSubmit={handleSubmit}
-            fetchAgain={props.fetchAgain}
-            setFetchAgain={props.setFetchAgain}
-          />
-        ))}
-      </Box>
-    </div>
+    <>
+      {props?.loans?.length > 0 &&
+        <div
+          style={{
+            height: "400px",
+            width: "100%",
+            marginTop: "20px",
+          }}
+        >
+
+          <Box
+            sx={{
+              height: 400,
+              minWidth: "900px",
+            }}
+          >
+            {props.loans.map((loan, index) => (
+              <Item
+                loan={loan}
+                key={index}
+                handleSubmit={handleSubmit}
+                fetchAgain={props.fetchAgain}
+                setFetchAgain={props.setFetchAgain}
+              />
+            ))}
+          </Box>
+        </div>
+      }
+    </>
   );
 }
 

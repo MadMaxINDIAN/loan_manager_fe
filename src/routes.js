@@ -8,6 +8,7 @@ import NewEntryComponent from "./components/NewEntryComponent";
 import Transactions from "./components/Transactions";
 import LoanDetails from "./components/LoanDetailsComponent";
 import EditDetails from "./components/EditDetailsComponent";
+import WithdrawComponent from "./components/WithdrawComponent";
 
 const routes = [
   {
@@ -42,6 +43,10 @@ const routes = [
         path: "edit_details",
         element: <EditDetails />,
       },
+      {
+        path: "withdraw",
+        element: <WithdrawComponent />
+      }
     ],
   },
   // {

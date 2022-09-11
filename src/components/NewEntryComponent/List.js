@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { useSnackbar } from "notistack";
 import axios from "axios";
+import { BASE_URL_1 } from "../../constants/urls";
 
 Date.prototype.addDays = function (days) {
   var date = new Date(this.valueOf());
@@ -128,7 +129,7 @@ function LoansList(props) {
     };
     try {
       const res = await axios.post(
-        `https://kalawati-finance-company.herokuapp.com/transaction/${id}/add`,
+        `${BASE_URL_1}/transaction/${id}/add`,
         data,
         config
       );

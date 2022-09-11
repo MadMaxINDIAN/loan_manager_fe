@@ -16,6 +16,7 @@ import { login } from "../redux/services/actions/authActions";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL_1 } from "../constants/urls";
 
 function Copyright(props) {
   return (
@@ -51,7 +52,7 @@ function Home(props) {
     const data = new FormData(event.currentTarget);
     try {
       const response = await axios.post(
-        "https://kalawati-finance-company.herokuapp.com/auth/login",
+        `${BASE_URL_1}/auth/login`,
         {
           username: data.get("username"),
           password: data.get("password"),

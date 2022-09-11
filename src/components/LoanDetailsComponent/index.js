@@ -8,6 +8,7 @@ import {
 } from "../../redux/services/actions/loaderActions";
 import { useSnackbar } from "notistack";
 import Details from "./Details";
+import { BASE_URL_1 } from "../../constants/urls";
 
 const LoanDetails = (props) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -21,7 +22,7 @@ const LoanDetails = (props) => {
     props.addLoader();
     try {
       const res = await axios.get(
-        `https://kalawati-finance-company.herokuapp.com/loan/get/${id}`,
+        `${BASE_URL_1}/loan/get/${id}`,
         config
       );
       setLoan(res.data.loan);

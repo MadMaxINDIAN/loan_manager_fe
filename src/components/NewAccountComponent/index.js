@@ -12,6 +12,7 @@ import {
   removeLoader,
 } from "../../redux/services/actions/loaderActions";
 import "react-datepicker/dist/react-datepicker.css";
+import { BASE_URL_1 } from "../../constants/urls";
 
 const NewAccountComponent = (props) => {
   const [input, setInput] = useState({
@@ -34,12 +35,12 @@ const NewAccountComponent = (props) => {
   const handleSubmit = () => {
     props.addLoader();
     axios
-      .post("https://kalawati-finance-company.herokuapp.com/borrower/add", input, config)
+      .post(`${BASE_URL_1}/borrower/add`, input, config)
       .then((res) => {
         const borrower_id = res?.data?.borrower?._id;
         input.borrower_id = borrower_id;
         return axios
-          .post("https://kalawati-finance-company.herokuapp.com/loan/add", input, config)
+          .post(`${BASE_URL_1}/loan/add`, input, config)
           .then(() => {
             props.removeLoader();
             enqueueSnackbar("Account Created Successfully", {

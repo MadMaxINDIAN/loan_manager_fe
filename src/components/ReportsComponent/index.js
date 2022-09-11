@@ -10,6 +10,7 @@ import LoansList from "./LoansList";
 import { Box, Button } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { BASE_URL_1 } from "../../constants/urls";
 
 const DashboardComponent = (props) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -34,7 +35,7 @@ const DashboardComponent = (props) => {
     try {
       props.addLoader();
       const res = await axios.post(
-        `https://kalawati-finance-company.herokuapp.com/loan/get/dates`,
+        `${BASE_URL_1}/loan/get/dates`,
         {
           from_date: fromDate,
           to_date: toDate,
@@ -55,7 +56,7 @@ const DashboardComponent = (props) => {
   useEffect(async () => {
     props.addLoader();
     try {
-      const result = await axios.get("https://kalawati-finance-company.herokuapp.com/loan/get", config);
+      const result = await axios.get(`${BASE_URL_1}/loan/get`, config);
       setLoans(result.data.loans);
       props.removeLoader();
     } catch (err) {

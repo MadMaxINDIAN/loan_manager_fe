@@ -8,6 +8,7 @@ import {
   addLoader,
   removeLoader,
 } from "../../redux/services/actions/loaderActions";
+import { BASE_URL_1 } from "../../constants/urls";
 
 const BorrowerDetails = (props) => {
   const today = new Date();
@@ -29,7 +30,7 @@ const BorrowerDetails = (props) => {
   const handleBadDebt = async (loan_id) => {
     props.addLoader();
     await axios
-      .post(`https://kalawati-finance-company.herokuapp.com/transaction/badDebt/${loan_id}`, config)
+      .post(`${BASE_URL_1}/transaction/badDebt/${loan_id}`, config)
       .then((res) => {
         props.removeLoader();
         setBorrower(res.data);
@@ -56,7 +57,7 @@ const BorrowerDetails = (props) => {
     };
     try {
       const res = await axios.post(
-        `https://kalawati-finance-company.herokuapp.com/transaction/${id}/add`,
+        `${BASE_URL_1}/transaction/${id}/add`,
         data,
         config
       );
@@ -135,7 +136,7 @@ const BorrowerDetails = (props) => {
                     .addDays(loan.loan_period)
                     .getTime() -
                     today.getTime()) /
-                    (1000 * 3600 * 24)
+                  (1000 * 3600 * 24)
                 )
               )}
             </Typography>
@@ -158,7 +159,7 @@ const BorrowerDetails = (props) => {
             {Math.floor(
               (new Date(loan.opening_date).addDays(loan.loan_period).getTime() -
                 today.getTime()) /
-                (1000 * 3600 * 24)
+              (1000 * 3600 * 24)
             ) < 0 &&
               loan.status !== "bad debt" && (
                 <Box display="flex" justifyContent="flex-end" m={2}>

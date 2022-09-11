@@ -13,6 +13,7 @@ import {
 } from "../../redux/services/actions/loaderActions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { BASE_URL_1 } from "../../constants/urls";
 
 const NewEntryComponent = (props) => {
   const [fromDate, setFromDate] = useState(new Date());
@@ -36,7 +37,7 @@ const NewEntryComponent = (props) => {
     props.addLoader();
     try {
       const response = await axios.post(
-        `https://kalawati-finance-company.herokuapp.com/transaction/get/dates`,
+        `${BASE_URL_1}/transaction/get/dates`,
         {
           from_date: fromDate,
           to_date: toDate,

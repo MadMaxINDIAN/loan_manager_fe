@@ -10,6 +10,7 @@ import {
   addLoader,
   removeLoader,
 } from "../../redux/services/actions/loaderActions";
+import { BASE_URL_1 } from "../../constants/urls";
 const EditDetails = (props) => {
   const [srNo, setSrNo] = React.useState();
   const [loan, setLoan] = React.useState();
@@ -35,7 +36,7 @@ const EditDetails = (props) => {
     props.addLoader();
     try {
       const res = await axios.get(
-        `https://kalawati-finance-company.herokuapp.com/loan/get/sr_no/${srNo}`,
+        `${BASE_URL_1}/loan/get/sr_no/${srNo}`,
         config
       );
       setLoan(res.data.loan);
@@ -69,7 +70,7 @@ const EditDetails = (props) => {
     props.addLoader();
     try {
       await axios.delete(
-        `https://kalawati-finance-company.herokuapp.com/loan/delete/${loan?.sr_no}`,
+        `${BASE_URL_1}/loan/delete/${loan?.sr_no}`,
         config
       );
       enqueueSnackbar("Loan deleted successfully", {
@@ -95,12 +96,12 @@ const EditDetails = (props) => {
     props.addLoader();
     try {
       const res = await axios.post(
-        `https://kalawati-finance-company.herokuapp.com/borrower/update/`,
+        `${BASE_URL_1}/borrower/update/`,
         input,
         config
       );
       const res1 = await axios.post(
-        `https://kalawati-finance-company.herokuapp.com/loan/update/`,
+        `${BASE_URL_1}/loan/update/`,
         input,
         config
       );

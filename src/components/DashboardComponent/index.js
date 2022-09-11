@@ -20,6 +20,7 @@ import {
   removeLoader,
 } from "../../redux/services/actions/loaderActions";
 import Graph from "./Graph";
+import { BASE_URL_1 } from "../../constants/urls";
 
 const DashboardComponent = (props) => {
   const [summary, setSummary] = React.useState();
@@ -45,12 +46,12 @@ const DashboardComponent = (props) => {
   useEffect(async () => {
     props.addLoader();
     try {
-      const res = await axios.get("https://kalawati-finance-company.herokuapp.com/summary/", config);
+      const res = await axios.get(`${BASE_URL_1}/summary/`, config);
       setAmountToBePaid(res.data.amount_to_be_paid || 0);
       setAmountReceivable(res.data.amount_receivable || 0);
       setSummary(res.data.summary);
       const res1 = await axios.get(
-        "https://kalawati-finance-company.herokuapp.com/summary/seven",
+        `${BASE_URL_1}/summary/seven`,
         config
       );
       const sevendata = [];
@@ -98,7 +99,7 @@ const DashboardComponent = (props) => {
         },
       ]);
       const res2 = await axios.post(
-        `https://kalawati-finance-company.herokuapp.com/summary/daily`,
+        `${BASE_URL_1}/summary/daily`,
         {
           from_date: new Date().toISOString(),
           to_date: new Date().toISOString(),
@@ -132,7 +133,7 @@ const DashboardComponent = (props) => {
     }
     try {
       const response = await axios.post(
-        `https://kalawati-finance-company.herokuapp.com/summary/daily`,
+        `${BASE_URL_1}/summary/daily`,
         {
           from_date: fromDate,
           to_date: toDate,

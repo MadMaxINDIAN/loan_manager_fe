@@ -14,6 +14,7 @@ import {
 } from "../../redux/services/actions/loaderActions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { BASE_URL_1 } from "../../constants/urls";
 
 const NewEntryComponent = (props) => {
   const [borrowers, setBorrowers] = useState([]);
@@ -38,7 +39,7 @@ const NewEntryComponent = (props) => {
 
   const onChangeHandler = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/borrower/get?search=${name}`, config)
+      const res = await axios.get(`${BASE_URL_1}/borrower/get?search=${name}`, config)
       setBorrowers(res.data.borrowers)
     } catch (err) {
       enqueueSnackbar(err?.response?.data?.message || 'Something went wrong', {

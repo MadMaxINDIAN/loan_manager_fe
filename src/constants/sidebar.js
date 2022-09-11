@@ -4,6 +4,7 @@ import ReceiptRoundedIcon from "@mui/icons-material/ReceiptRounded";
 import AssessmentRoundedIcon from "@mui/icons-material/AssessmentRounded";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import EditIcon from "@mui/icons-material/Edit";
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 
 const list1 = [
   {
@@ -30,6 +31,11 @@ const list1 = [
     title: "Entries",
     icon: <CurrencyRupeeIcon />,
     route: "/dashboard/transactions",
+  },
+  {
+    title: "Withdrawn Funds",
+    icon: <CurrencyRupeeIcon />,
+    route: "/dashboard/withdraw",
   },
 ];
 
@@ -63,6 +69,11 @@ const list2 = [
     title: "Edit Details",
     icon: <EditIcon />,
     route: "/dashboard/edit_details",
+  },
+  {
+    title: "Withdrawn Funds",
+    icon: <PointOfSaleIcon />,
+    route: "/dashboard/withdraw",
   },
 ];
 

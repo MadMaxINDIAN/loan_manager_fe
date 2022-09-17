@@ -27,6 +27,12 @@ const DashboardComponent = (props) => {
   const [amountReceivable, setAmountReceivable] = React.useState(0);
   const [totalInvested, setTotalInvested] = React.useState(0);
   const [totalReceived, setTotalReceived] = React.useState(0);
+  const [totalInvestment, setTotalInvestment] = React.useState(0)
+  const [totalWithdrawal, setTotalWithdrawal] = React.useState(0)
+  const [totalLoanAmount, setTotalLoanAmount] = React.useState(0)
+  const [totalRecievedNow, setTotalRecievedNow] = React.useState(0)
+  const [investmentDate, setInvestmentDate] = React.useState(0)
+  const [withdrawalDate, setWithdrawalDate] = React.useState(0)
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(new Date());
   const { enqueueSnackbar } = useSnackbar();
@@ -42,6 +48,7 @@ const DashboardComponent = (props) => {
       Authorization: `Bearer ${props.auth.token}`,
     },
   };
+  const cashInHand = +totalInvestment + +totalRecievedNow - +totalLoanAmount - +totalWithdrawal
 
   useEffect(async () => {
     props.addLoader();
@@ -108,8 +115,29 @@ const DashboardComponent = (props) => {
       );
       setTotalInvested(res2.data.total_investment || 0);
       setTotalReceived(res2.data.total_received || 0);
+
+      const res3 = await axios.get(`${BASE_URL_1}/withdraw/total`, config)
+      setTotalInvestment(res3.data.investment || 0)
+      setTotalWithdrawal(res3.data.withdrawal || 0)
+      const res4 = await axios.post(`${BASE_URL_1}/summary/daily`,
+        {
+          from_date: new Date('2021-01-01').toISOString(),
+          to_date: new Date().toISOString(),
+        },
+        config
+      );
+      setTotalLoanAmount(res4.data.total_investment || 0)
+      setTotalRecievedNow(res4.data.total_received || 0)
+
+      const res5 = await axios.post(`${BASE_URL_1}/withdraw/total/date`, {
+        from_date: new Date().toISOString(),
+        to_date: new Date().toISOString(),
+      }, config)
+      setInvestmentDate(res5.data.investment)
+      setWithdrawalDate(res5.data.withdrawal)
       props.removeLoader();
     } catch (err) {
+      console.log(err)
       props.removeLoader();
       enqueueSnackbar(
         err?.response?.data?.message || "Couldn't fetch summary",
@@ -142,6 +170,13 @@ const DashboardComponent = (props) => {
       );
       setTotalInvested(response.data.total_investment || 0);
       setTotalReceived(response.data.total_received || 0);
+
+      const res = await axios.post(`${BASE_URL_1}/withdraw/total/date`, {
+        from_date: fromDate,
+        to_date: toDate,
+      }, config)
+      setInvestmentDate(res.data.investment)
+      setWithdrawalDate(res.data.withdrawal)
       props.removeLoader();
     } catch (err) {
       props.removeLoader();
@@ -167,7 +202,7 @@ const DashboardComponent = (props) => {
           padding: "2em",
         }}
       >
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} md={6} lg={3}>
           <Box>
             <Typography variant="h6">Investment Amount</Typography>
             <Typography variant="p">
@@ -175,7 +210,7 @@ const DashboardComponent = (props) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} md={6} lg={3}>
           <Box>
             <Typography variant="h6">Amount Receivable</Typography>
             <Typography variant="body1">as of today</Typography>
@@ -184,12 +219,20 @@ const DashboardComponent = (props) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} md={6} lg={3}>
           <Box>
             <Typography variant="h6">Amount Receivable</Typography>
             <Typography variant="body1">today</Typography>
             <Typography variant="p">
               {dollarIndianLocale.format(amountReceivable)}
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
+          <Box>
+            <Typography variant="h6">Cash In Hand</Typography>
+            <Typography variant="p">
+              {dollarIndianLocale.format(cashInHand.toString())}
             </Typography>
           </Box>
         </Grid>
@@ -222,7 +265,8 @@ const DashboardComponent = (props) => {
             Go
           </Button>
         </Grid>
-        <Grid item lg={2.5}>
+        <Grid item lg={5}></Grid>
+        <Grid item lg={3}>
           <Box>
             <Typography variant="h6">Total Loan Amount</Typography>
             <Typography variant="p">
@@ -230,11 +274,27 @@ const DashboardComponent = (props) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item lg={2.5}>
+        <Grid item lg={3}>
           <Box>
             <Typography variant="h6">Received Amount</Typography>
             <Typography variant="p">
               {dollarIndianLocale.format(totalReceived)}
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item lg={3}>
+          <Box>
+            <Typography variant="h6">Total Deposit</Typography>
+            <Typography variant="p">
+              {dollarIndianLocale.format(investmentDate)}
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item lg={3}>
+          <Box>
+            <Typography variant="h6">Total Withdrawal</Typography>
+            <Typography variant="p">
+              {dollarIndianLocale.format(withdrawalDate)}
             </Typography>
           </Box>
         </Grid>

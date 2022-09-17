@@ -19,6 +19,7 @@ const WithdrawComponent = (props) => {
             Authorization: `Bearer ${props.auth.token}`,
         },
     };
+    console.log(props.auth.token)
 
     useEffect(() => {
         props.addLoader()

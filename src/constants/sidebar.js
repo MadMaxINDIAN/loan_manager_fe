@@ -32,11 +32,6 @@ const list1 = [
     icon: <CurrencyRupeeIcon />,
     route: "/dashboard/transactions",
   },
-  {
-    title: "Funds",
-    icon: <CurrencyRupeeIcon />,
-    route: "/dashboard/funds",
-  },
 ];
 
 const list2 = [

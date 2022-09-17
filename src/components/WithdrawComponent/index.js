@@ -5,6 +5,7 @@ import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { get } from "../../utils/apiHelper";
+import AddTransaction from "./AddTransaction";
 
 const WithdrawComponent = (props) => {
     const [transactions, setTransactions] = useState([]);
@@ -31,6 +32,7 @@ const WithdrawComponent = (props) => {
     return (
         <>
             <Box mt={7} style={{ maxHeight: "80vw", height: "400px" }}>
+                <AddTransaction />
                 <DataGrid
                     rows={transactions}
                     columns={[

@@ -44,7 +44,7 @@ const routes = [
         element: <EditDetails />,
       },
       {
-        path: "withdraw",
+        path: "funds",
         element: <WithdrawComponent />
       }
     ],

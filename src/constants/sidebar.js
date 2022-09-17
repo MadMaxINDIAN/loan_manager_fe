@@ -33,9 +33,9 @@ const list1 = [
     route: "/dashboard/transactions",
   },
   {
-    title: "Withdrawn Funds",
+    title: "Funds",
     icon: <CurrencyRupeeIcon />,
-    route: "/dashboard/withdraw",
+    route: "/dashboard/funds",
   },
 ];
 
@@ -71,9 +71,9 @@ const list2 = [
     route: "/dashboard/edit_details",
   },
   {
-    title: "Withdrawn Funds",
+    title: "Funds",
     icon: <PointOfSaleIcon />,
-    route: "/dashboard/withdraw",
+    route: "/dashboard/funds",
   },
 ];
 

@@ -42,6 +42,7 @@ const WithdrawComponent = (props) => {
                         { field: "id", headerName: "ID", flex: 1 },
                         { field: "name", headerName: "Name", flex: 1 },
                         { field: "amount", headerName: "Amount", flex: 1 },
+                        { field: "type", headerName: "Type", flex: 1 },
                         { field: "createdAt", headerName: "Date and time", flex: 1 },
                     ]}
                     pageSize={25}

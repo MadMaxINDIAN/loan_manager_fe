@@ -6,9 +6,11 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { get } from "../../utils/apiHelper";
 import AddTransaction from "./AddTransaction";
+import {BASE_URL_1} from "../../constants/urls"
 
 const WithdrawComponent = (props) => {
     const [transactions, setTransactions] = useState([]);
+    const [update, setUpdate] = useState(true);
     const { enqueueSnackbar } = useSnackbar();
     const config = {
         headers: {
@@ -17,9 +19,10 @@ const WithdrawComponent = (props) => {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:5000/withdraw/transaction", config)
+        axios.get(`${BASE_URL_1}/withdraw/transaction`, config)
             .then(res => {
                 setTransactions(res?.data?.withdraw);
+                setUpdate(false);
             }).catch(err => {
                 console.log(err);
                 enqueueSnackbar("Something went wrong", {
@@ -27,12 +30,12 @@ const WithdrawComponent = (props) => {
                     variant: "error"
                 })
             })
-    }, []);
+    }, [update]);
 
     return (
         <>
             <Box mt={7} style={{ maxHeight: "80vw", height: "400px" }}>
-                <AddTransaction />
+                <AddTransaction token={props.auth.token} setUpdate={setUpdate}/>
                 <DataGrid
                     rows={transactions}
                     columns={[

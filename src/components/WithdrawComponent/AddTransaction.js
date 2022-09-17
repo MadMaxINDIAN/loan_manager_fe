@@ -2,13 +2,18 @@ import React from "react";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
 import { Button, Grid, TextField } from "@mui/material";
+import { post } from "../../utils/apiHelper";
+import { BASE_URL_1 } from "../../constants/urls";
+import { useSnackbar } from "notistack";
 
 const AddTransaction = (props) => {
     const Schema = Yup.object().shape({
         name: Yup.string().required("Name is required"),
         amount: Yup.number().required("Amount is required").min(1, "Price should be positive"),
-        type: Yup.bool().required("Transaction type is required")
+        type: Yup.string().required("Transaction type is required")
     });
+
+    const { enqueueSnackbar } = useSnackbar();
 
     const formik = useFormik({
         initialValues: {
@@ -18,7 +23,17 @@ const AddTransaction = (props) => {
         validationSchema: Schema,
         // on submit callback function
         onSubmit: (values, actions) => {
-            console.log(values);
+            post(`${BASE_URL_1}/withdraw/transaction`, `Beraer ${props.token}`, values).then((res) => {
+                console.log(res);
+                props.setUpdate(true);
+                actions.resetForm();
+                actions.setSubmitting(false);
+            }).catch((err) => {
+                enqueueSnackbar(err.message || err.response.data.message || "Something wnet wrong", {
+                    autoHideDuration: 3000,
+                    variant: "error"
+                })
+            })
         },
     });
 
@@ -65,14 +80,16 @@ const AddTransaction = (props) => {
                 </Grid>
                 <Grid item xs={6}>
                     <Button variant="contained" color="success" fullWidth onClick={(e) => {
-                        formik.setFieldValue('type', true);
-                        handleSubmit(e)
+                        formik.setFieldValue('type', "Add").then(() => {
+                            handleSubmit(e)
+                        })
                     }}>+</Button>
                 </Grid>
                 <Grid item xs={6}>
                     <Button variant="contained" color="error" fullWidth onClick={(e) => {
-                        formik.setFieldValue('type', false);
-                        handleSubmit(e)
+                        formik.setFieldValue('type', "Withdraw").then(() => {
+                            handleSubmit(e)
+                        })
                     }}>-</Button>
                 </Grid>
             </Grid>

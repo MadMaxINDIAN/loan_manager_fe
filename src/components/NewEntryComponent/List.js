@@ -16,7 +16,6 @@ const today = new Date();
 today.setHours(5, 30, 0, 0);
 
 function Item(props) {
-  const [amount, setAmount] = React.useState("");
 
   let dollarIndianLocale = Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -27,8 +26,9 @@ function Item(props) {
   const { handleSubmit, borrower } = props;
   return (
     <>
-      {borrower?.loans?.map((loan) => (
-        <Box
+      {borrower?.loans?.map((loan) => {
+        const [amount, setAmount] = React.useState("");
+        return <Box
           key={loan?._id}
           style={{
             border: "1px solid black",
@@ -107,7 +107,7 @@ function Item(props) {
             Add entry
           </Button>
         </Box>
-      ))}
+      })}
     </>
   );
 }
@@ -133,6 +133,7 @@ function LoansList(props) {
         data,
         config
       );
+      props.setName('')
       props.removeLoader();
       enqueueSnackbar(res?.data?.message, {
         variant: "success",

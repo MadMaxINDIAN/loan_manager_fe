@@ -20,7 +20,7 @@ const NewEntryComponent = (props) => {
   const [borrowers, setBorrowers] = useState([]);
   const [date, setDate] = useState(new Date());
   const [fetchAgain, setFetchAgain] = useState(false);
-  const [name, setName] = useState()
+  const [name, setName] = useState('')
 
   const { enqueueSnackbar } = useSnackbar();
   const config = {
@@ -88,6 +88,7 @@ const NewEntryComponent = (props) => {
             error={false}
             helperText={false}
             onChange={(e) => setName(e.target.value)}
+            value={name}
           />
         </Box>
         <List
@@ -97,6 +98,7 @@ const NewEntryComponent = (props) => {
           removeLoader={props.removeLoader}
           fetchAgain={fetchAgain}
           setFetchAgain={setFetchAgain}
+          setName={setName}
         />
       </center>
     </div>

@@ -95,7 +95,7 @@ function Home(props) {
             }}
           />
           <Typography component="h1" variant="h5">
-            Kalawati Finance Company
+            Laxmi Kala Finance
           </Typography>
           <Box
             component="form"

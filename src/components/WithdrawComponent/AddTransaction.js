@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
 import { Button, Grid, TextField } from "@mui/material";
 import { post } from "../../utils/apiHelper";
 import { BASE_URL_1 } from "../../constants/urls";
 import { useSnackbar } from "notistack";
+import DatePicker from "react-datepicker";
 
 const AddTransaction = (props) => {
     const Schema = Yup.object().shape({
@@ -12,6 +13,7 @@ const AddTransaction = (props) => {
         amount: Yup.number().required("Amount is required").min(1, "Price should be positive"),
         type: Yup.string().required("Transaction type is required")
     });
+    const [date, setDate] = useState(new Date());
 
     const { enqueueSnackbar } = useSnackbar();
 
@@ -23,8 +25,7 @@ const AddTransaction = (props) => {
         validationSchema: Schema,
         // on submit callback function
         onSubmit: (values, actions) => {
-            post(`${BASE_URL_1}/withdraw/transaction`, `Beraer ${props.token}`, values).then((res) => {
-                console.log(res);
+            post(`${BASE_URL_1}/withdraw/transaction`, `Beraer ${props.token}`, { ...values, date }).then((res) => {
                 props.setUpdate(true);
                 actions.resetForm();
                 actions.setSubmitting(false);
@@ -50,7 +51,7 @@ const AddTransaction = (props) => {
     return (
         <div style={{ width: "100%", marginBottom: "2em" }}>
             <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={4}>
                     <TextField
                         name="name"
                         label="Name"
@@ -64,8 +65,8 @@ const AddTransaction = (props) => {
                         helperText={touched.name && errors.name}
                     />
                 </Grid>
-                <Grid item xs={12} md={6}>
-                <TextField
+                <Grid item xs={12} md={4}>
+                    <TextField
                         name="amount"
                         label="Amount"
                         placeholder="amount"
@@ -76,6 +77,13 @@ const AddTransaction = (props) => {
                         {...getFieldProps("amount")}
                         error={Boolean(touched.amount && errors.amount)}
                         helperText={touched.amount && errors.amount}
+                    />
+                </Grid>
+                <Grid item xs={12} md={4} my={1}>
+                    <DatePicker
+                        selected={date}
+                        dateFormat="dd/MM/yyyy"
+                        onChange={(date) => setDate(date)}
                     />
                 </Grid>
                 <Grid item xs={6}>

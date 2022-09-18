@@ -42,7 +42,7 @@ function Layout(props) {
             }}
           />
           <Typography variant="h6" noWrap component="div">
-            Kalawati Finance Company
+            Laxmi Kala Finance
           </Typography>
         </Toolbar>
       </AppBar>
@@ -62,27 +62,27 @@ function Layout(props) {
           <List>
             {props?.auth?.user?.type === "user"
               ? sidebar.first.map((item, index) => (
-                  <ListItem
-                    button
-                    onClick={() => navigate(item.route)}
-                    key={item.title}
-                    selected={pathname === item.route}
-                  >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.title} />
-                  </ListItem>
-                ))
+                <ListItem
+                  button
+                  onClick={() => navigate(item.route)}
+                  key={item.title}
+                  selected={pathname === item.route}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </ListItem>
+              ))
               : sidebar.second.map((item, index) => (
-                  <ListItem
-                    button
-                    onClick={() => navigate(item.route)}
-                    key={item.title}
-                    selected={pathname === item.route}
-                  >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.title} />
-                  </ListItem>
-                ))}
+                <ListItem
+                  button
+                  onClick={() => navigate(item.route)}
+                  key={item.title}
+                  selected={pathname === item.route}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </ListItem>
+              ))}
           </List>
           <Divider />
         </Box>

@@ -19,7 +19,6 @@ const WithdrawComponent = (props) => {
             Authorization: `Bearer ${props.auth.token}`,
         },
     };
-    console.log(props.auth.token)
 
     useEffect(() => {
         props.addLoader()
@@ -28,7 +27,7 @@ const WithdrawComponent = (props) => {
                 setTransactions(res?.data?.withdraw.map((transaction => {
                     return {
                         ...transaction,
-                        createdAt: new Date(transaction.createdAt).toLocaleString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                        date: new Date(transaction.date).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' }),
                         amount: formatAmount(transaction.amount)
                     }
                 })));
@@ -54,7 +53,7 @@ const WithdrawComponent = (props) => {
                         { field: "name", headerName: "Name", flex: 1 },
                         { field: "amount", headerName: "Amount", flex: 1 },
                         { field: "type", headerName: "Type", flex: 1 },
-                        { field: "createdAt", headerName: "Date and time", flex: 1 },
+                        { field: "date", headerName: "Date", flex: 1 },
                     ]}
                     pageSize={25}
                     rowsPerPageOptions={[5]}

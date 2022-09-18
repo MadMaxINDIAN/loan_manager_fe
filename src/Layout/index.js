@@ -21,9 +21,10 @@ function Layout(props) {
   React.useEffect(() => {
     if (!props?.auth?.isAuthenticated) {
       navigate("/");
+      return
     }
-  }),
-    [props.auth.isAuthenticated];
+  }, [props.auth.isAuthenticated])
+
   const { pathname } = useLocation();
   return (
     <Box sx={{ display: "flex" }}>

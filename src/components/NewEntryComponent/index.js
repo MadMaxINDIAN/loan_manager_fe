@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import axios from "axios";
 import List from "./List";
 import { useSnackbar } from "notistack";
@@ -29,19 +29,14 @@ const NewEntryComponent = (props) => {
     },
   };
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      onChangeHandler()
-    }, 250)
-
-    return () => clearTimeout(delayDebounceFn)
-  }, [name])
-
-  const onChangeHandler = async () => {
+  const handleSubmit = async () => {
+    props.addLoader()
     try {
       const res = await axios.get(`${BASE_URL_1}/borrower/get?search=${name}`, config)
       setBorrowers(res.data.borrowers)
+      props.removeLoader()
     } catch (err) {
+      props.removeLoader()
       enqueueSnackbar(err?.response?.data?.message || 'Something went wrong', {
         variant: 'error',
         autoHideDuration: 3000
@@ -80,19 +75,29 @@ const NewEntryComponent = (props) => {
               onChange={(date) => setDate(date)}
             />
           </Box>
-          <TextField
-            fullWidth
-            label='name'
-            placeholder="Name"
-            name="name"
-            error={false}
-            helperText={false}
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-          />
+          <div style={{ display: 'flex' }}>
+            <TextField
+              fullWidth
+              label='name'
+              placeholder="Name"
+              name="name"
+              error={false}
+              helperText={false}
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              autoFocus
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  handleSubmit()
+                }
+              }}
+            />
+            <Button variant="contained" onClick={handleSubmit} style={{ margin: '0px 10px' }}>Go</Button>
+          </div>
         </Box>
         <List
           borrowers={borrowers}
+          setBorrowers={setBorrowers}
           date={date}
           addLoader={props.addLoader}
           removeLoader={props.removeLoader}

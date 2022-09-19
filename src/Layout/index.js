@@ -24,7 +24,6 @@ function Layout(props) {
       return
     }
   }, [props.auth.isAuthenticated])
-  console.log(props.auth.token)
   const { pathname } = useLocation();
   return (
     <Box sx={{ display: "flex" }}>

@@ -95,6 +95,11 @@ function Item(props) {
             value={amount}
             style={{ textAlign: "right" }}
             placeholder="Amount"
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                handleSubmit(loan._id, amount)
+              }
+            }}
           />
           <Button
             size="small"
@@ -134,6 +139,7 @@ function LoansList(props) {
         config
       );
       props.setName('')
+      props.setBorrowers([])
       props.removeLoader();
       enqueueSnackbar(res?.data?.message, {
         variant: "success",

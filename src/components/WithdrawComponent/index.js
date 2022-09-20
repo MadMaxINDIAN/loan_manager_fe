@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { useSnackbar } from "notistack";
@@ -12,6 +12,7 @@ import formatAmount from "../../utils/formatAmount";
 
 const WithdrawComponent = (props) => {
     const [transactions, setTransactions] = useState([]);
+    const [transaction, setTransaction] = useState()
     const [update, setUpdate] = useState(true);
     const { enqueueSnackbar } = useSnackbar();
     const config = {
@@ -19,6 +20,33 @@ const WithdrawComponent = (props) => {
             Authorization: `Bearer ${props.auth.token}`,
         },
     };
+
+    const handleDelete = async () => {
+        props.addLoader()
+        try {
+            await axios.delete(`${BASE_URL_1}/withdraw/${transaction.id}`, config)
+            setTransaction()
+            setUpdate(!update)
+            props.removeLoader()
+            enqueueSnackbar('Entry deleted', {
+                variant: 'success',
+                autoHideDuration: 3000
+            })
+        } catch (err) {
+            console.log(err)
+            props.removeLoader()
+            let message = 'Something went wrong'
+            if (err?.response?.data?.errors) {
+                message = err?.response?.data?.errors[0].msg
+            } else if (err?.response?.data?.message) {
+                message = err?.response?.data?.message
+            }
+            enqueueSnackbar(message, {
+                variant: 'error',
+                autoHideDuration: 3000
+            })
+        }
+    }
 
     useEffect(() => {
         props.addLoader()
@@ -45,20 +73,36 @@ const WithdrawComponent = (props) => {
 
     return (
         <>
-            <Box mt={7} style={{ maxHeight: "80vw", height: "400px" }}>
+            <Box mt={7}>
                 <AddTransaction token={props.auth.token} setUpdate={setUpdate} />
-                <DataGrid
-                    rows={transactions}
-                    columns={[
-                        { field: "name", headerName: "Name", flex: 1 },
-                        { field: "amount", headerName: "Amount", flex: 1 },
-                        { field: "type", headerName: "Type", flex: 1 },
-                        { field: "date", headerName: "Date", flex: 1 },
-                    ]}
-                    pageSize={25}
-                    rowsPerPageOptions={[5]}
-                    disableSelectionOnClick
-                />
+                {transaction && <div style={{ margin: '10px 0px' }}><Button variant='contained' color='error' fullWidth onClick={handleDelete}>Delete</Button></div>}
+                <Box style={{ maxHeight: "80vw", height: "400px" }} sx={{
+                    '& .super-app-theme--hover': {
+                        '&:hover': {
+                            cursor: 'pointer'
+                        }
+                    }
+                }}>
+                    <DataGrid
+                        rows={transactions}
+                        columns={[
+                            { field: "name", headerName: "Name", flex: 1 },
+                            { field: "amount", headerName: "Amount", flex: 1 },
+                            { field: "type", headerName: "Type", flex: 1 },
+                            { field: "date", headerName: "Date", flex: 1 },
+                        ]}
+                        pageSize={25}
+                        rowsPerPageOptions={[5]}
+                        onSelectionModelChange={(ids) => {
+                            const selectedIDs = new Set(ids);
+                            const selectedRowData = transactions.filter((row) =>
+                                selectedIDs.has(row.id.toString())
+                            );
+                            setTransaction(selectedRowData[0])
+                        }}
+                        getRowClassName={() => `super-app-theme--hover`}
+                    />
+                </Box>
             </Box>
         </>
     )

@@ -26,7 +26,7 @@ const columns = [
         headerName: "Opening Balance",
         width: 150,
         align: "right",
-        valueFormatter: ({ value }) => value.split("₹")[1],
+        valueFormatter: ({ value }) => value[0] === "-" ? (`-${value.split("₹")[1]}`) : value.split("₹")[1],
         renderCell: ({ value }) => value,
     },
     {
@@ -34,7 +34,7 @@ const columns = [
         headerName: "Investment",
         width: 150,
         align: "right",
-        valueFormatter: ({ value }) => value.split("₹")[1],
+        valueFormatter: ({ value }) => value[0] === "-" ? (`-${value.split("₹")[1]}`) : value.split("₹")[1],
         renderCell: ({ value }) => value,
     },
     {
@@ -42,7 +42,7 @@ const columns = [
         headerName: "Recieved Amount",
         width: 150,
         align: "right",
-        valueFormatter: ({ value }) => value.split("₹")[1],
+        valueFormatter: ({ value }) => value[0] === "-" ? (`-${value.split("₹")[1]}`) : value.split("₹")[1],
         renderCell: ({ value }) => value,
     },
     {
@@ -50,7 +50,7 @@ const columns = [
         headerName: "Loan Given",
         width: 150,
         align: "right",
-        valueFormatter: ({ value }) => value.split("₹")[1],
+        valueFormatter: ({ value }) => value[0] === "-" ? (`-${value.split("₹")[1]}`) : value.split("₹")[1],
         renderCell: ({ value }) => value,
     },
     {
@@ -58,7 +58,7 @@ const columns = [
         headerName: "Withdrawal",
         width: 150,
         align: "right",
-        valueFormatter: ({ value }) => value.split("₹")[1],
+        valueFormatter: ({ value }) => value[0] === "-" ? (`-${value.split("₹")[1]}`) : value.split("₹")[1],
         renderCell: ({ value }) => value,
     },
     {
@@ -66,7 +66,7 @@ const columns = [
         headerName: "Closing Balance",
         width: 150,
         align: "right",
-        valueFormatter: ({ value }) => value.split("₹")[1],
+        valueFormatter: ({ value }) => value[0] === "-" ? (`-${value.split("₹")[1]}`) : value.split("₹")[1],
         renderCell: ({ value }) => value,
     },
 ];

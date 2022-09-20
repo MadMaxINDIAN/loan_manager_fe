@@ -83,7 +83,7 @@ const index = (props) => {
     };
     const rows = ledger?.map((val, index) => ({
         id: val?.id,
-        date: new Date(val?.id)?.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+        date: new Date(val?.id)?.toLocaleDateString('en-ZA'),
         opening_balance: formatAmount(val?.opening_balance),
         investment: formatAmount(val?.investment),
         recieved: formatAmount(val?.recieved),

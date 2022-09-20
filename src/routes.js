@@ -9,6 +9,7 @@ import Transactions from "./components/Transactions";
 import LoanDetails from "./components/LoanDetailsComponent";
 import EditDetails from "./components/EditDetailsComponent";
 import WithdrawComponent from "./components/WithdrawComponent";
+import Ledger from './components/Ledger'
 
 const routes = [
   {
@@ -46,6 +47,10 @@ const routes = [
       {
         path: "funds",
         element: <WithdrawComponent />
+      },
+      {
+        path: 'ledger',
+        element: <Ledger />
       }
     ],
   },

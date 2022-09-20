@@ -70,6 +70,11 @@ const list2 = [
     icon: <PointOfSaleIcon />,
     route: "/dashboard/funds",
   },
+  {
+    title: 'Ledger',
+    icon: <PointOfSaleIcon />,
+    route: '/dashboard/ledger'
+  }
 ];
 
 export default {

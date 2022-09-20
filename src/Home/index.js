@@ -26,9 +26,10 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Loan Management System Team (Naman and Samyak)
+      {"Developed By "}
+      <Link color="inherit" href="#">
+        Rectangle Technologies
+        {/* TODO: Add email */}
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

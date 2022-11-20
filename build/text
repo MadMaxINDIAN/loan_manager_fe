@@ -1,0 +1,24 @@
+loan_manager
+LoanManager
+
+LOAN_ACCOUNT
+	- LOAN_ACCOUNT_ID
+	- SR.NO
+	- OPENING_DATE
+	- BORROWER_ID
+	- LOAN_AMOUNT
+	- AMOUNT_TO_BE_PAID
+	- DAILY_PAYMENT_AMOUNT
+	- .
+	- .
+	- .
+	- .60 columns
+
+BORROWER
+	- BORROWER_ID
+	- NAME
+	- ADDRESS
+	- CONTACT
+	- AADHAR
+	- OCCUPATION
+

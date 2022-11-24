@@ -86,19 +86,26 @@ const AddTransaction = (props) => {
                         onChange={(date) => setDate(date)}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                     <Button variant="contained" color="success" fullWidth onClick={(e) => {
                         formik.setFieldValue('type', "Add").then(() => {
                             handleSubmit(e)
                         })
-                    }}>+</Button>
+                    }}>Deposit</Button>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                     <Button variant="contained" color="error" fullWidth onClick={(e) => {
                         formik.setFieldValue('type', "Withdraw").then(() => {
                             handleSubmit(e)
                         })
-                    }}>-</Button>
+                    }}>Withdraw</Button>
+                </Grid>
+                <Grid item xs={4}>
+                    <Button variant="contained" color="error" fullWidth onClick={(e) => {
+                        formik.setFieldValue('type', "Expense").then(() => {
+                            handleSubmit(e)
+                        })
+                    }}>Expense</Button>
                 </Grid>
             </Grid>
         </div>

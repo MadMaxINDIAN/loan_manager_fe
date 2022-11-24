@@ -31,8 +31,10 @@ const DashboardComponent = (props) => {
   const [totalWithdrawal, setTotalWithdrawal] = React.useState(0)
   const [totalLoanAmount, setTotalLoanAmount] = React.useState(0)
   const [totalRecievedNow, setTotalRecievedNow] = React.useState(0)
+  const [totalExpense, setTotalExpense] = React.useState(0)
   const [investmentDate, setInvestmentDate] = React.useState(0)
   const [withdrawalDate, setWithdrawalDate] = React.useState(0)
+  const [expenseDate, setExpenseDate] = React.useState(0)
   const [fromDate, setFromDate] = React.useState(new Date());
   const [toDate, setToDate] = React.useState(new Date());
   const { enqueueSnackbar } = useSnackbar();
@@ -48,7 +50,7 @@ const DashboardComponent = (props) => {
       Authorization: `Bearer ${props.auth.token}`,
     },
   };
-  const cashInHand = +totalInvestment + +totalRecievedNow - +totalLoanAmount - +totalWithdrawal
+  const cashInHand = +totalInvestment + +totalRecievedNow - +totalLoanAmount - +totalWithdrawal - +totalExpense
 
   useEffect(async () => {
     props.addLoader();
@@ -119,6 +121,7 @@ const DashboardComponent = (props) => {
       const res3 = await axios.get(`${BASE_URL_1}/withdraw/total`, config)
       setTotalInvestment(res3.data.investment || 0)
       setTotalWithdrawal(res3.data.withdrawal || 0)
+      setTotalExpense(res3.data.expense || 0)
       const res4 = await axios.post(`${BASE_URL_1}/summary/daily`,
         {
           from_date: new Date('2021-01-01').toISOString(),
@@ -135,6 +138,7 @@ const DashboardComponent = (props) => {
       }, config)
       setInvestmentDate(res5.data.investment)
       setWithdrawalDate(res5.data.withdrawal)
+      setExpenseDate(res5.data.expense)
       props.removeLoader();
     } catch (err) {
       console.log(err)
@@ -177,6 +181,7 @@ const DashboardComponent = (props) => {
       }, config)
       setInvestmentDate(res.data.investment)
       setWithdrawalDate(res.data.withdrawal)
+      setExpenseDate(res.data.expense)
       props.removeLoader();
     } catch (err) {
       props.removeLoader();
@@ -266,7 +271,7 @@ const DashboardComponent = (props) => {
           </Button>
         </Grid>
         <Grid item lg={5}></Grid>
-        <Grid item lg={3}>
+        <Grid item lg={2.5}>
           <Box>
             <Typography variant="h6">Total Loan Amount</Typography>
             <Typography variant="p">
@@ -274,7 +279,7 @@ const DashboardComponent = (props) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item lg={2.5}>
           <Box>
             <Typography variant="h6">Received Amount</Typography>
             <Typography variant="p">
@@ -282,7 +287,7 @@ const DashboardComponent = (props) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item lg={2}>
           <Box>
             <Typography variant="h6">Total Deposit</Typography>
             <Typography variant="p">
@@ -290,11 +295,19 @@ const DashboardComponent = (props) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item lg={3}>
+        <Grid item lg={2.5}>
           <Box>
             <Typography variant="h6">Total Withdrawal</Typography>
             <Typography variant="p">
               {dollarIndianLocale.format(withdrawalDate)}
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item lg={2.5}>
+          <Box>
+            <Typography variant="h6">Total Expense</Typography>
+            <Typography variant="p">
+              {dollarIndianLocale.format(expenseDate)}
             </Typography>
           </Box>
         </Grid>
